@@ -110,7 +110,7 @@ class BLUKeyboardViewController: UIInputViewController {
         addConstraints(buttons, containingView: topRow)
         addConstraints(middleButtons, containingView: middleRow)
         addConstraints(bottomRowButtons, containingView: bottomRow)
-        addConstraints(lastRowButtons, containingView: lastRow)
+        addConstraintsForLastLine(lastRowButtons, containingView: lastRow)
     }
 
     //MARK: Creating of Special Buttons
@@ -206,6 +206,28 @@ class BLUKeyboardViewController: UIInputViewController {
             var leftConstraint : NSLayoutConstraint!
             if index == 0 {
                 leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: containingView, attribute: .Left, multiplier: 1.0, constant: 1)
+            } else {
+                leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: buttons[index-1], attribute: .Right, multiplier: 1.0, constant: 1)
+                let widthConstraint = NSLayoutConstraint(item: buttons[0], attribute: .Width, relatedBy: .Equal, toItem: button, attribute: .Width, multiplier: 1.0, constant: 0)
+                containingView.addConstraint(widthConstraint)
+            }
+            var rightConstraint : NSLayoutConstraint!
+            if index == buttons.count - 1 {
+                rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: containingView, attribute: .Right, multiplier: 1.0, constant: -1)
+            } else {
+                rightConstraint = NSLayoutConstraint(item: button, attribute: .Right, relatedBy: .Equal, toItem: buttons[index+1], attribute: .Left, multiplier: 1.0, constant: -1)
+            }
+            containingView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
+        }
+    }
+    
+    func addConstraintsForLastLine(buttons: [UIButton], containingView: UIView){
+        for (index, button) in buttons.enumerate() {
+            let topConstraint = NSLayoutConstraint(item: button, attribute: .Top, relatedBy: .Equal, toItem: containingView, attribute: .Top, multiplier: 1.0, constant: 1)
+            let bottomConstraint = NSLayoutConstraint(item: button, attribute: .Bottom, relatedBy: .Equal, toItem: containingView, attribute: .Bottom, multiplier: 1.0, constant: -1)
+            var leftConstraint : NSLayoutConstraint!
+            if index == 0 {
+                leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: containingView, attribute: .Left, multiplier: 1.0, constant: 1)
             } else if index == 2 {
                 leftConstraint = NSLayoutConstraint(item: button, attribute: .Left, relatedBy: .Equal, toItem: buttons[index-1], attribute: .Right, multiplier: 1.0, constant: 1)
                 let widthConstraint = NSLayoutConstraint(item: buttons[0], attribute: .Width, relatedBy: .Equal, toItem: button, attribute: .Width, multiplier: 1.0, constant: -150)
@@ -224,7 +246,7 @@ class BLUKeyboardViewController: UIInputViewController {
             containingView.addConstraints([topConstraint, bottomConstraint, rightConstraint, leftConstraint])
         }
     }
-    
+
     // MARK: View Layout with Visual Format
     func setUpViewConstraints() {
         let viewDictionary = ["topRow": topRow, "middleRow": middleRow, "bottomRow":bottomRow, "view":view, "lastRow":lastRow,
