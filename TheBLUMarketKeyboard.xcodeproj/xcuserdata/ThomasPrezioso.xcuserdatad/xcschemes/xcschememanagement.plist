@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>BLUKeyboard.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>ExperimentalKeyBoard.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>TheBLUMarketKeyboard.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>9F17A7C21D2C466300FA9370</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9FD5313B1D2C08DF00EDF252</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9FD531521D2C08DF00EDF252</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9FD5315D1D2C08DF00EDF252</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9FD531731D2C08F500EDF252</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
