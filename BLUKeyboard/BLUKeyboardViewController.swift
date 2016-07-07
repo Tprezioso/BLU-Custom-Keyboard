@@ -289,7 +289,7 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let charview2_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[cha2(50)]",
+            "V:[cha2(40)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         characterTwoRow.addConstraints(charview2_constraint_H)
