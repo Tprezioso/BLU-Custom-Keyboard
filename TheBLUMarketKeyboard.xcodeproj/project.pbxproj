@@ -16,7 +16,6 @@
 		9FD531581D2C08DF00EDF252 /* TheBLUMarketKeyboardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD531571D2C08DF00EDF252 /* TheBLUMarketKeyboardTests.swift */; };
 		9FD531631D2C08DF00EDF252 /* TheBLUMarketKeyboardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD531621D2C08DF00EDF252 /* TheBLUMarketKeyboardUITests.swift */; };
 		9FD5317B1D2C08F500EDF252 /* BLUKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9FD531741D2C08F500EDF252 /* BLUKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		9FD531811D2C097000EDF252 /* KeyboardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9FD531801D2C097000EDF252 /* KeyboardView.xib */; };
 		9FD531831D2C09A100EDF252 /* BLUKeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FD531821D2C09A100EDF252 /* BLUKeyboardViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,7 +74,6 @@
 		9FD531641D2C08DF00EDF252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9FD531741D2C08F500EDF252 /* BLUKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BLUKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD531781D2C08F500EDF252 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9FD531801D2C097000EDF252 /* KeyboardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KeyboardView.xib; sourceTree = "<group>"; };
 		9FD531821D2C09A100EDF252 /* BLUKeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BLUKeyboardViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,7 +166,6 @@
 		9FD531751D2C08F500EDF252 /* BLUKeyboard */ = {
 			isa = PBXGroup;
 			children = (
-				9FD531801D2C097000EDF252 /* KeyboardView.xib */,
 				9FD531821D2C09A100EDF252 /* BLUKeyboardViewController.swift */,
 				9FD531781D2C08F500EDF252 /* Info.plist */,
 			);
@@ -326,7 +323,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FD531811D2C097000EDF252 /* KeyboardView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

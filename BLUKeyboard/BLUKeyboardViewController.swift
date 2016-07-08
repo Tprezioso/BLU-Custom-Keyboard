@@ -423,7 +423,21 @@ class BLUKeyboardViewController: UIInputViewController {
     }
     
     @IBAction func spacePressed(button: UIButton) {
-        (textDocumentProxy as UIKeyInput).insertText(" ")
+        var counter = 0
+        counter = NSUserDefaults.standardUserDefaults().integerForKey("counter")
+        counter += 1
+        if counter % 2 == 0 {
+           doubleTapSpaceAction()
+            counter = 0
+        } else {
+            (textDocumentProxy as UIKeyInput).insertText(" ")
+        }
+        NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
+    }
+    
+    func doubleTapSpaceAction() {
+        (textDocumentProxy as UIKeyInput).deleteBackward()
+        (textDocumentProxy as UIKeyInput).insertText(". ")
     }
     
     @IBAction func returnPressed(button: UIButton) {
