@@ -8,16 +8,9 @@
 import UIKit
 
 extension String {
+    
     var first: String {
         return String(characters.prefix(1))
-    }
-    
-    var last: String {
-        return String(characters.suffix(1))
-    }
-    
-    func indexAt(int: Character) -> String {
-        return String(characters.indexOf(int))
     }
     
     var uppercaseFirst: String {
