@@ -28,7 +28,6 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterOneRow: UIView!
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -376,8 +375,7 @@ class BLUKeyboardViewController: UIInputViewController {
     //MARK: Button Actions
     func capitalizeFirstLetterOfASentence() {
         let textfieldinput = textDocumentProxy.documentContextBeforeInput
-        print("<<<<<<<<<<<<<<<<<<\(textfieldinput)")
-       if (textfieldinput?.characters.count == 0) {
+        if (textfieldinput?.characters.count == 0) {
             textfieldinput?.uppercaseFirst
             capsLockOn = true
             changeCaps(topRow)
