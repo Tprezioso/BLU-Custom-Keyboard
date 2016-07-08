@@ -7,6 +7,24 @@
 
 import UIKit
 
+extension String {
+    var first: String {
+        return String(characters.prefix(1))
+    }
+    
+    var last: String {
+        return String(characters.suffix(1))
+    }
+    
+    func indexAt(int: Character) -> String {
+        return String(characters.indexOf(int))
+    }
+    
+    var uppercaseFirst: String {
+        return first.uppercaseString + String(characters.dropFirst())
+    }
+}
+
 class BLUKeyboardViewController: UIInputViewController {
     
     var capsLockOn = true
@@ -17,6 +35,7 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterOneRow: UIView!
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -362,12 +381,41 @@ class BLUKeyboardViewController: UIInputViewController {
     }
 
     //MARK: Button Actions
+    func capitalizeFirstLetterOfASentence() {
+        let textfieldinput = textDocumentProxy.documentContextBeforeInput
+        print("<<<<<<<<<<<<<<<<<<\(textfieldinput)")
+       if (textfieldinput?.characters.count == 0) {
+            textfieldinput?.uppercaseFirst
+            capsLockOn = true
+            changeCaps(topRow)
+            changeCaps(middleRow)
+            changeCaps(bottomRow)
+        } else {
+            capsLockOn = false
+            changeCaps(topRow)
+            changeCaps(middleRow)
+            changeCaps(bottomRow)
+        }
+    }
+    
     func keyPressed(sender: AnyObject?) {
         let button = sender as! UIButton
         let title = button.titleForState(.Normal)
         (textDocumentProxy as UIKeyInput).insertText(title!)
+        capitalizeFirstLetterOfASentence()
+        if button.titleLabel?.text == "." {
+            capsLockOn = true
+            changeCaps(topRow)
+            changeCaps(middleRow)
+            changeCaps(bottomRow)
+        } else {
+            capsLockOn = false
+            changeCaps(topRow)
+            changeCaps(middleRow)
+            changeCaps(bottomRow)
+        }
     }
-    
+
     @IBAction func nextKeyboardPressed(button: UIButton) {
         advanceToNextInputMode()
     }
