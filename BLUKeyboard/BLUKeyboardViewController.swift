@@ -64,7 +64,7 @@ class BLUKeyboardViewController: UIInputViewController {
         self.middleRow = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         
         let bottomRowTitles = ["Z","X","C","V","B","N","M"]
-        let bottomRowButtons = createButtons(bottomRowTitles)
+        var bottomRowButtons = createButtons(bottomRowTitles)
         self.bottomRow = UIView(frame: CGRectMake(0, 0,view.frame.size.width, 40))
         
         self.lastRow = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
@@ -90,10 +90,10 @@ class BLUKeyboardViewController: UIInputViewController {
         self.numberRow.translatesAutoresizingMaskIntoConstraints = false
         
         let backspace = createBackSpaceButton("🔙")
-        middleButtons.append(backspace)
+        bottomRowButtons.append(backspace)
         
         let shift = createShiftButton("↑")
-        middleButtons.insert(shift, atIndex: 0)
+        bottomRowButtons.insert(shift, atIndex: 0)
         
         for button in numbersButton {
             numberRow.addSubview(button)
@@ -202,6 +202,7 @@ class BLUKeyboardViewController: UIInputViewController {
         button.backgroundColor = UIColor(white:  1.0, alpha: 1.0)
         button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.spacePressed(_:)), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.doubleTapSpaceAction(_:)), forControlEvents: .TouchDownRepeat)
         return button
     }
 
@@ -397,11 +398,11 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         let view_constraint_H_Middle = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|[middleRow]|",
+            "H:|-10-[middleRow]-10-|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         let view_constraint_H_Bottom = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:|-40-[bottomRow]-40-|",
+            "H:|-20-[bottomRow]-20-|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         let view_constraint_H_last = NSLayoutConstraint.constraintsWithVisualFormat("H:|[lastRow]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: viewDictionary)
@@ -481,27 +482,13 @@ class BLUKeyboardViewController: UIInputViewController {
     }
     
     @IBAction func spacePressed(button: UIButton) {
-        var counter = 0
-        counter = NSUserDefaults.standardUserDefaults().integerForKey("counter")
-        counter += 1
-        if counter % 2 == 0 && keyWasPressed == true {
-           doubleTapSpaceAction()
-            capsLockOn = true
-            changeCaps(topRow)
-            changeCaps(middleRow)
-            changeCaps(bottomRow)
-            counter = 0
-            NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
-        } else {
             (textDocumentProxy as UIKeyInput).insertText(" ")
-            NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
-        }
-        
+            keyWasPressed = false
     }
     
-    func doubleTapSpaceAction() {
-        (textDocumentProxy as UIKeyInput).deleteBackward()
+    func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).insertText(". ")
+        (textDocumentProxy as UIKeyInput).deleteBackward()
     }
     
     @IBAction func returnPressed(button: UIButton) {
