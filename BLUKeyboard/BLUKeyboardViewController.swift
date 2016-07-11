@@ -29,6 +29,8 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterOneRow: UIView!
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
+    var keyWasPressed: Bool!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +38,9 @@ class BLUKeyboardViewController: UIInputViewController {
     }
 
     func setupViews() {
+        setupViewHeight()
         didPressCharacter = false
+        keyWasPressed = false
         
         let numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         let numbersButton = createButtons(numbers)
@@ -118,7 +122,7 @@ class BLUKeyboardViewController: UIInputViewController {
         for button in lastRowButtons {
             lastRow.addSubview(button)
         }
-        
+
         self.view.addSubview(numberRow)
         self.view.addSubview(characterOneRow)
         self.view.addSubview(characterTwoRow)
@@ -270,16 +274,39 @@ class BLUKeyboardViewController: UIInputViewController {
         }
     }
 
+    func setupViewHeight() {
+        let heightConstraint = NSLayoutConstraint(item:self.view,
+                                                  attribute: .Height,
+                                                  relatedBy: .Equal,
+                                                  toItem: nil,
+                                                  attribute: .NotAnAttribute,
+                                                  multiplier: 0.0,
+                                                  constant:500)
+        self.view.addConstraint(heightConstraint)
+    }
+    
     // MARK: View Layout with Visual Format
     func setUpViewConstraints() {
-        let viewDictionary = ["topRow": topRow, "middleRow": middleRow, "bottomRow":bottomRow, "view":view, "lastRow":lastRow,
-                              "cha1":characterOneRow, "cha2":characterTwoRow, "num":numberRow];
+        
+        let viewDictionary = ["view":view, "topRow": topRow, "middleRow": middleRow, "bottomRow":bottomRow, "lastRow":lastRow,
+                              "cha1":characterOneRow, "cha2":characterTwoRow, "num":numberRow]
+        let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[view]",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil, views: viewDictionary)
+        let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[view(500)]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDictionary)
+        view.addConstraints(superview_constraint)
+        view.addConstraints(superview_constraint_V)
+
         let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[num(40)]",
+            "V:[num(45)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         numberRow.addConstraints(view1_constraint_H_Number)
@@ -290,7 +317,7 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[topRow(40)]",
+            "V:[topRow(50)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         topRow.addConstraints(view1_constraint_H)
@@ -301,7 +328,7 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let view2_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[middleRow(40)]",
+            "V:[middleRow(50)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         middleRow.addConstraints(view2_constraint_H)
@@ -312,7 +339,7 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let view3_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[bottomRow(40)]",
+            "V:[bottomRow(50)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         bottomRow.addConstraints(view3_constraint_H)
@@ -334,7 +361,7 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let charview1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[cha1(40)]",
+            "V:[cha1(50)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         characterOneRow.addConstraints(charview1_constraint_H)
@@ -345,13 +372,14 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
         let charview2_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[cha2(40)]",
+            "V:[cha2(50)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         characterTwoRow.addConstraints(charview2_constraint_H)
         characterTwoRow.addConstraints(charview2_constraint_V)
 
 //        MARK:Position View constraints
+        
         let numview_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[num]|",
             options: NSLayoutFormatOptions(rawValue:0),
@@ -381,13 +409,13 @@ class BLUKeyboardViewController: UIInputViewController {
         if didPressCharacter == true {
             // MARK: add back in [cha2] and [cha1]
             let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-[num][cha1][cha2][lastRow]|",
+                "V:|-[num][cha1][cha2][lastRow]-|",
                 options: NSLayoutFormatOptions.AlignAllLeading,
                 metrics: nil, views: viewDictionary)
                 view.addConstraints(view_constraint_V)
         } else {
             let view_constraint_V2 = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-[topRow][middleRow][bottomRow][lastRow]|",
+                "V:|-[topRow][middleRow][bottomRow][lastRow]-|",
                 options: NSLayoutFormatOptions.AlignAllLeading,
                 metrics: nil, views: viewDictionary)
                 view.addConstraints(view_constraint_V2)
@@ -422,6 +450,7 @@ class BLUKeyboardViewController: UIInputViewController {
         let button = sender as! UIButton
         let title = button.titleForState(.Normal)
         (textDocumentProxy as UIKeyInput).insertText(title!)
+        keyWasPressed = true
         capitalizeFirstLetterOfASentence()
         if button.titleLabel?.text == "." {
             capsLockOn = true
@@ -455,17 +484,19 @@ class BLUKeyboardViewController: UIInputViewController {
         var counter = 0
         counter = NSUserDefaults.standardUserDefaults().integerForKey("counter")
         counter += 1
-        if counter % 2 == 0 {
+        if counter % 2 == 0 && keyWasPressed == true {
            doubleTapSpaceAction()
             capsLockOn = true
             changeCaps(topRow)
             changeCaps(middleRow)
             changeCaps(bottomRow)
             counter = 0
+            NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
         } else {
             (textDocumentProxy as UIKeyInput).insertText(" ")
+            NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
         }
-        NSUserDefaults.standardUserDefaults().setInteger(counter, forKey: "counter")
+        
     }
     
     func doubleTapSpaceAction() {
