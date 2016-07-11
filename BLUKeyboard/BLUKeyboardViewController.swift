@@ -29,15 +29,48 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterOneRow: UIView!
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
+    var didRotateView: Bool!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        view.layoutIfNeeded()
     }
+    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        getScreenSize()
+        
+    }
+    var screenWidth:CGFloat = 0
+    var screenHeight:CGFloat = 0
+    func getScreenSize() {
+        screenWidth = UIScreen.mainScreen().bounds.width
+        screenHeight = UIScreen.mainScreen().bounds.height
+        print("SCREEN RESOLUTION: "+screenWidth.description+" x "+screenHeight.description)
+    }
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
+            view.layoutIfNeeded()
+            didRotateView = true
+            setUpViewConstraints()
+        } else{
+            didRotateView = false
+        }
+    }
+//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+//        if UIDevice.currentDevice().orientation.isLandscape.boolValue {
+//           view.layoutIfNeeded()
+//            print("Landscape")
+//        } else {
+//            view.layoutIfNeeded()
+//            print("Portrait")
+//        }
+//    }
 
     func setupViews() {
         setupViewHeight()
         didPressCharacter = false
+        didRotateView = false
         
         let numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         let numbersButton = createButtons(numbers)
@@ -288,21 +321,115 @@ class BLUKeyboardViewController: UIInputViewController {
         
         let viewDictionary = ["view":view, "topRow": topRow, "middleRow": middleRow, "bottomRow":bottomRow, "lastRow":lastRow,
                               "cha1":characterOneRow, "cha2":characterTwoRow, "num":numberRow]
+        
         let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
+        
         let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(500)]",
+            "V:[view(600)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         view.addConstraints(superview_constraint)
         view.addConstraints(superview_constraint_V)
 
+        if didRotateView == true {
+            let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            
+            let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[view(600)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            view.addConstraints(superview_constraint)
+            view.addConstraints(superview_constraint_V)
+            let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            
+            let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[num(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            numberRow.addConstraints(view1_constraint_H_Number)
+            numberRow.addConstraints(view1_constraint_V_Number)
+            
+            let view1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[topRow(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            topRow.addConstraints(view1_constraint_H)
+            topRow.addConstraints(view1_constraint_V)
+            
+            let view2_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let view2_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[middleRow(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            middleRow.addConstraints(view2_constraint_H)
+            middleRow.addConstraints(view2_constraint_V)
+            
+            let view3_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let view3_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[bottomRow(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            bottomRow.addConstraints(view3_constraint_H)
+            bottomRow.addConstraints(view3_constraint_V)
+            
+            let lastview1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let lastview1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[lastRow(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            lastRow.addConstraints(lastview1_constraint_H)
+            lastRow.addConstraints(lastview1_constraint_V)
+            
+            let charview1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let charview1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[cha1(40)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            characterOneRow.addConstraints(charview1_constraint_H)
+            characterOneRow.addConstraints(charview1_constraint_V)
+            
+            let charview2_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+                "H:[view]",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil, views: viewDictionary)
+            let charview2_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+                "V:[cha2(50)]",
+                options: NSLayoutFormatOptions(rawValue:0),
+                metrics: nil, views: viewDictionary)
+            characterTwoRow.addConstraints(charview2_constraint_H)
+            characterTwoRow.addConstraints(charview2_constraint_V)
+
+        } else {
         let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDictionary)
+        
         let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "V:[num(45)]",
             options: NSLayoutFormatOptions(rawValue:0),
@@ -375,7 +502,7 @@ class BLUKeyboardViewController: UIInputViewController {
             metrics: nil, views: viewDictionary)
         characterTwoRow.addConstraints(charview2_constraint_H)
         characterTwoRow.addConstraints(charview2_constraint_V)
-
+        }
 //        MARK:Position View constraints
         let numview_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[num]|",
@@ -405,13 +532,13 @@ class BLUKeyboardViewController: UIInputViewController {
         
         if didPressCharacter == true {
             let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-[num][cha1][cha2][lastRow]-|",
+                "V:|[num][cha1][cha2][lastRow]|",
                 options: NSLayoutFormatOptions.AlignAllLeading,
                 metrics: nil, views: viewDictionary)
                 view.addConstraints(view_constraint_V)
         } else {
             let view_constraint_V2 = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:|-[topRow][middleRow][bottomRow][lastRow]-|",
+                "V:|[topRow][middleRow][bottomRow][lastRow]|",
                 options: NSLayoutFormatOptions.AlignAllLeading,
                 metrics: nil, views: viewDictionary)
                 view.addConstraints(view_constraint_V2)
@@ -423,6 +550,7 @@ class BLUKeyboardViewController: UIInputViewController {
         view.addConstraints(view_constraint_H_Middle)
         view.addConstraints(view_constraint_H_Bottom)
         view.addConstraints(view_constraint_H_last)
+        view.layoutIfNeeded()
     }
 
     //MARK: Button Actions
