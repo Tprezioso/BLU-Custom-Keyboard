@@ -29,8 +29,6 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterOneRow: UIView!
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
-    var keyWasPressed: Bool!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +38,6 @@ class BLUKeyboardViewController: UIInputViewController {
     func setupViews() {
         setupViewHeight()
         didPressCharacter = false
-        keyWasPressed = false
         
         let numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         let numbersButton = createButtons(numbers)
@@ -60,7 +57,7 @@ class BLUKeyboardViewController: UIInputViewController {
         self.topRow = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height / 3))
         
         let middleRowTitles = ["A","S","D","F","G","H","J","K","L"]
-        var middleButtons = createButtons(middleRowTitles)
+        let middleButtons = createButtons(middleRowTitles)
         self.middleRow = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         
         let bottomRowTitles = ["Z","X","C","V","B","N","M"]
@@ -380,7 +377,6 @@ class BLUKeyboardViewController: UIInputViewController {
         characterTwoRow.addConstraints(charview2_constraint_V)
 
 //        MARK:Position View constraints
-        
         let numview_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[num]|",
             options: NSLayoutFormatOptions(rawValue:0),
@@ -408,7 +404,6 @@ class BLUKeyboardViewController: UIInputViewController {
         let view_constraint_H_last = NSLayoutConstraint.constraintsWithVisualFormat("H:|[lastRow]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: viewDictionary)
         
         if didPressCharacter == true {
-            // MARK: add back in [cha2] and [cha1]
             let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
                 "V:|-[num][cha1][cha2][lastRow]-|",
                 options: NSLayoutFormatOptions.AlignAllLeading,
@@ -451,7 +446,6 @@ class BLUKeyboardViewController: UIInputViewController {
         let button = sender as! UIButton
         let title = button.titleForState(.Normal)
         (textDocumentProxy as UIKeyInput).insertText(title!)
-        keyWasPressed = true
         capitalizeFirstLetterOfASentence()
         if button.titleLabel?.text == "." {
             capsLockOn = true
@@ -483,12 +477,11 @@ class BLUKeyboardViewController: UIInputViewController {
     
     @IBAction func spacePressed(button: UIButton) {
             (textDocumentProxy as UIKeyInput).insertText(" ")
-            keyWasPressed = false
     }
     
     func doubleTapSpaceAction(button: UIButton) {
-        (textDocumentProxy as UIKeyInput).insertText(". ")
         (textDocumentProxy as UIKeyInput).deleteBackward()
+        (textDocumentProxy as UIKeyInput).insertText(".")
     }
     
     @IBAction func returnPressed(button: UIButton) {
