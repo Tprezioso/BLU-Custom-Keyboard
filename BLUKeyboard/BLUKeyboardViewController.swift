@@ -41,11 +41,15 @@ class BLUKeyboardViewController: UIInputViewController {
         if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
             view.layoutIfNeeded()
             didRotateView = true
+            setupViewHeight()
             setUpViewConstraints()
-        } else{
+        } else {
+            view.layoutIfNeeded()
             didRotateView = false
+            setupViewHeight()
             setUpViewConstraints()
         }
+        print("\(view.frame.size.width) X \(view.frame.size.height)")
     }
 
     func setupViews() {
