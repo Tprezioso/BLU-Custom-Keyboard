@@ -55,6 +55,7 @@ class BLUKeyboardViewController: UIInputViewController {
             setUpViewConstraints()
         } else{
             didRotateView = false
+            setUpViewConstraints()
         }
     }
 
