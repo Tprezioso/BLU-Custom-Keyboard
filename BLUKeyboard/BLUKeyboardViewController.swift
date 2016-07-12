@@ -31,10 +31,15 @@ class BLUKeyboardViewController: UIInputViewController {
     var didPressCharacter: Bool!
     var didRotateView: Bool!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
         setupViews()
         view.layoutIfNeeded()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        setupViews()
+//        view.layoutIfNeeded()
         print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
     
@@ -56,7 +61,7 @@ class BLUKeyboardViewController: UIInputViewController {
     }
 
     func setupViews() {
-        setupViewHeight()
+        //setupViewHeight()
         didPressCharacter = false
         didRotateView = false
         
