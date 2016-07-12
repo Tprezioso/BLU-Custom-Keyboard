@@ -40,19 +40,19 @@ class BLUKeyboardViewController: UIInputViewController {
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
-            view.layoutIfNeeded()
+           // view.layoutIfNeeded()
             didRotateView = true
-            setupViewHeight()
+            //setupViewHeight()
             setUpViewConstraints()
             print("LANDSCAPE!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
-
-        } else {
-            view.layoutIfNeeded()
-            didRotateView = false
-            setUpViewConstraints()
-            setupViewHeight()
-            print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
         }
+//        } else {
+//            //view.layoutIfNeeded()
+//            didRotateView = false
+//           // setupViewHeight()
+//            setUpViewConstraints()
+//            print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
+//        }
     }
 
     func setupViews() {
@@ -99,6 +99,7 @@ class BLUKeyboardViewController: UIInputViewController {
         lastRowButtons.append(period)
         lastRowButtons.append(returnButton)
         
+        //view.translatesAutoresizingMaskIntoConstraints = false
         self.characterOneRow.translatesAutoresizingMaskIntoConstraints = false
         self.characterTwoRow.translatesAutoresizingMaskIntoConstraints = false
         self.topRow.translatesAutoresizingMaskIntoConstraints = false
@@ -300,7 +301,7 @@ class BLUKeyboardViewController: UIInputViewController {
                                                   toItem: nil,
                                                   attribute: .NotAnAttribute,
                                                   multiplier: 0.0,
-                                                  constant:500)
+                                                  constant:216)
         self.view.addConstraint(heightConstraint)
     }
     
@@ -310,30 +311,30 @@ class BLUKeyboardViewController: UIInputViewController {
         let viewDictionary = ["view":view, "topRow": topRow, "middleRow": middleRow, "bottomRow":bottomRow, "lastRow":lastRow,
                               "cha1":characterOneRow, "cha2":characterTwoRow, "num":numberRow]
         
-        let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[view]",
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil, views: viewDictionary)
-        
-        let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(600)]",
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil, views: viewDictionary)
-        view.addConstraints(superview_constraint)
-        view.addConstraints(superview_constraint_V)
+//        let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
+//            "H:[view]",
+//            options: NSLayoutFormatOptions(rawValue: 0),
+//            metrics: nil, views: viewDictionary)
+//        
+//        let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+//            "V:[view(216)]",
+//            options: NSLayoutFormatOptions(rawValue:0),
+//            metrics: nil, views: viewDictionary)
+//        view.addConstraints(superview_constraint)
+//        view.addConstraints(superview_constraint_V)
 
         if didRotateView == true {
-            let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
-                "H:[view]",
-                options: NSLayoutFormatOptions(rawValue: 0),
-                metrics: nil, views: viewDictionary)
-            
-            let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-                "V:[view(600)]",
-                options: NSLayoutFormatOptions(rawValue:0),
-                metrics: nil, views: viewDictionary)
-            view.addConstraints(superview_constraint)
-            view.addConstraints(superview_constraint_V)
+//            let superview_constraint = NSLayoutConstraint.constraintsWithVisualFormat(
+//                "H:[view]",
+//                options: NSLayoutFormatOptions(rawValue: 0),
+//                metrics: nil, views: viewDictionary)
+//            
+//            let superview_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+//                "V:[view(200)]",
+//                options: NSLayoutFormatOptions(rawValue:0),
+//                metrics: nil, views: viewDictionary)
+//            view.addConstraints(superview_constraint)
+//            view.addConstraints(superview_constraint_V)
             let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
                 "H:[view]",
                 options: NSLayoutFormatOptions(rawValue: 0),
@@ -522,6 +523,9 @@ class BLUKeyboardViewController: UIInputViewController {
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
         let view_constraint_H_last = NSLayoutConstraint.constraintsWithVisualFormat("H:|[lastRow]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: viewDictionary)
+//        let viewVertical = NSLayoutConstraint.constraintsWithVisualFormat("V:|[view]|", options: NSLayoutFormatOptions.AlignAllLeading, metrics: nil, views: viewDictionary)
+//        view.addConstraints(viewVertical)
+        
         
         if didPressCharacter == true {
             let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
@@ -543,7 +547,8 @@ class BLUKeyboardViewController: UIInputViewController {
         view.addConstraints(view_constraint_H_Middle)
         view.addConstraints(view_constraint_H_Bottom)
         view.addConstraints(view_constraint_H_last)
-        view.layoutIfNeeded()
+        //view.layoutIfNeeded()
+        print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
 
     //MARK: Button Actions
