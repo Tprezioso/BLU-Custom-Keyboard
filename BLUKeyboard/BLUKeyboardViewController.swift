@@ -31,21 +31,10 @@ class BLUKeyboardViewController: UIInputViewController {
     var didPressCharacter: Bool!
     var didRotateView: Bool!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         view.layoutIfNeeded()
-    }
-    override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        getScreenSize()
-        
-    }
-    var screenWidth:CGFloat = 0
-    var screenHeight:CGFloat = 0
-    func getScreenSize() {
-        screenWidth = UIScreen.mainScreen().bounds.width
-        screenHeight = UIScreen.mainScreen().bounds.height
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -171,7 +160,7 @@ class BLUKeyboardViewController: UIInputViewController {
             button.translatesAutoresizingMaskIntoConstraints = false
             button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
             button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
-            button.addTarget(self, action:#selector(BLUKeyboardViewController.keyPressed(_:)), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(BLUKeyboardViewController.keyPressed(_:)), forControlEvents: .TouchUpInside)
             buttons.append(button)
         }
         return buttons
@@ -601,7 +590,7 @@ class BLUKeyboardViewController: UIInputViewController {
     }
     
     @IBAction func spacePressed(button: UIButton) {
-            (textDocumentProxy as UIKeyInput).insertText(" ")
+        (textDocumentProxy as UIKeyInput).insertText(" ")
     }
     
     func doubleTapSpaceAction(button: UIButton) {
