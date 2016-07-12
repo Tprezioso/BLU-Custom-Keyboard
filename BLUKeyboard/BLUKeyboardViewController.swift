@@ -35,6 +35,7 @@ class BLUKeyboardViewController: UIInputViewController {
         super.viewDidLoad()
         setupViews()
         view.layoutIfNeeded()
+        print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
@@ -43,13 +44,15 @@ class BLUKeyboardViewController: UIInputViewController {
             didRotateView = true
             setupViewHeight()
             setUpViewConstraints()
+            print("LANDSCAPE!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
+
         } else {
             view.layoutIfNeeded()
             didRotateView = false
-            setupViewHeight()
             setUpViewConstraints()
+            setupViewHeight()
+            print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
         }
-        print("\(view.frame.size.width) X \(view.frame.size.height)")
     }
 
     func setupViews() {
