@@ -525,7 +525,6 @@ class BLUKeyboardViewController: UIInputViewController {
         view.addConstraints(view_constraint_H_Middle)
         view.addConstraints(view_constraint_H_Bottom)
         view.addConstraints(view_constraint_H_last)
-        print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
 
     //MARK: Button Actions
