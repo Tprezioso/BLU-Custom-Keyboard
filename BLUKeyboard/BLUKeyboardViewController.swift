@@ -474,27 +474,36 @@ class BLUKeyboardViewController: UIInputViewController {
             "H:|[num]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
+
         let charview_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[cha1]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
+        
         let charviewTwo_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[cha2]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
+        
         let view_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|[topRow]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
+        
         let view_constraint_H_Middle = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-10-[middleRow]-10-|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
+        
         let view_constraint_H_Bottom = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:|-20-[bottomRow]-20-|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDictionary)
-        let view_constraint_H_last = NSLayoutConstraint.constraintsWithVisualFormat("H:|[lastRow]|", options: NSLayoutFormatOptions(rawValue:0), metrics: nil, views: viewDictionary)
+        
+        let view_constraint_H_last = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[lastRow]|",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDictionary)
         
         if didPressCharacter == true {
             let view_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
@@ -589,8 +598,7 @@ class BLUKeyboardViewController: UIInputViewController {
             for _ in (str?.characters)! {
                 (textDocumentProxy as UIKeyInput).deleteBackward()
             }
-            
-            let replaced = str!.stringByReplacingOccurrencesOfString(str!, withString: guesses.first!)
+             let replaced = str!.stringByReplacingOccurrencesOfString(str!, withString: guesses.first!)
             (textDocumentProxy as UIKeyInput).insertText(replaced)
             print("First guess: \(guesses.first)")
         } else {
