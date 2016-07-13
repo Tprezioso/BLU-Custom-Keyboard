@@ -30,6 +30,8 @@ class BLUKeyboardViewController: UIInputViewController {
     var characterTwoRow: UIView!
     var didPressCharacter: Bool!
     var didRotateView: Bool!
+    var lexicon: UILexicon!
+    var currentString: String!
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -537,6 +539,7 @@ class BLUKeyboardViewController: UIInputViewController {
     func keyPressed(sender: AnyObject?) {
         let button = sender as! UIButton
         let title = button.titleForState(.Normal)
+        (textDocumentProxy as UIKeyInput).spellCheckingType
         (textDocumentProxy as UIKeyInput).insertText(title!)
         capitalizeFirstLetterOfASentence()
         if button.titleLabel?.text == "." {
@@ -569,6 +572,30 @@ class BLUKeyboardViewController: UIInputViewController {
     
     @IBAction func spacePressed(button: UIButton) {
         (textDocumentProxy as UIKeyInput).insertText(" ")
+        checkSpelling()
+    }
+    
+    func checkSpelling() {
+        let str = textDocumentProxy.documentContextBeforeInput
+        let textChecker = UITextChecker()
+        let misspelledRange = textChecker.rangeOfMisspelledWordInString(
+            str!, range: NSRange(0..<str!.utf16.count),
+            startingAt: 0, wrap: false, language: "en_US")
+        
+        if misspelledRange.location != NSNotFound,
+            let guesses = textChecker.guessesForWordRange(
+                misspelledRange, inString: str!, language: "en_US") as? [String]
+        {
+            for _ in (str?.characters)! {
+                (textDocumentProxy as UIKeyInput).deleteBackward()
+            }
+            
+            let replaced = str!.stringByReplacingOccurrencesOfString(str!, withString: guesses.first!)
+            (textDocumentProxy as UIKeyInput).insertText(replaced)
+            print("First guess: \(guesses.first)")
+        } else {
+            print("Not found")
+        }
     }
     
     func doubleTapSpaceAction(button: UIButton) {
@@ -578,6 +605,11 @@ class BLUKeyboardViewController: UIInputViewController {
     
     @IBAction func returnPressed(button: UIButton) {
         (textDocumentProxy as UIKeyInput).insertText("\n")
+    }
+    
+    @IBAction func myTypingAction(sender: UIButton) {
+        let title = sender.titleForState(.Normal)
+        (textDocumentProxy as UIKeyInput).insertText(title!)
     }
     
     @IBAction func charSetPressed(button: UIButton) {
