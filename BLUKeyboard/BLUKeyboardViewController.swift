@@ -525,6 +525,7 @@ class BLUKeyboardViewController: UIInputViewController {
         view.addConstraints(view_constraint_H_Middle)
         view.addConstraints(view_constraint_H_Bottom)
         view.addConstraints(view_constraint_H_last)
+
     }
 
     //MARK: Button Actions
