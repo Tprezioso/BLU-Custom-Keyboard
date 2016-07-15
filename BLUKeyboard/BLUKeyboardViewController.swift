@@ -55,18 +55,15 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         viewToAdd.addSubview(tableView)
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        
         cell.textLabel?.text = self.items[indexPath.row]
-        
         return cell
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
