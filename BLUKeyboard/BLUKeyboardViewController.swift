@@ -588,21 +588,17 @@ class BLUKeyboardViewController: UIInputViewController {
     
     func checkSpelling() {
         let str = textDocumentProxy.documentContextBeforeInput
-        
         var newString = str?.componentsSeparatedByString(" ")
-        
         for spellCheckWord in newString! {
             if spellCheckWord == "" {
                 newString?.removeLast()
             }
         }
         let stringToPass = newString?.last
-        
         let textChecker = UITextChecker()
         let misspelledRange = textChecker.rangeOfMisspelledWordInString(
             stringToPass!, range: NSRange(0..<stringToPass!.utf16.count),
             startingAt: 0, wrap: false, language: "en_US")
-        
         if misspelledRange.location != NSNotFound,
             let guesses = textChecker.guessesForWordRange(
                 misspelledRange, inString: stringToPass!, language: "en_US") as? [String]
