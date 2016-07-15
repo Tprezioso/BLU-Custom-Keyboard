@@ -34,7 +34,6 @@ class BLUKeyboardViewController: UIInputViewController {
     var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
     
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         setupViews()
