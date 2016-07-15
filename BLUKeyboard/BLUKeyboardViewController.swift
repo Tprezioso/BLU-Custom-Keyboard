@@ -32,6 +32,8 @@ class BLUKeyboardViewController: UIInputViewController {
     var didRotateView: Bool!
     var lexicon: UILexicon!
     var currentString: String!
+    var didTapSpaceForSpellCheck: Bool!
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -580,25 +582,35 @@ class BLUKeyboardViewController: UIInputViewController {
     }
     
     @IBAction func spacePressed(button: UIButton) {
-        (textDocumentProxy as UIKeyInput).insertText(" ")
         checkSpelling()
+        (textDocumentProxy as UIKeyInput).insertText(" ")
     }
     
     func checkSpelling() {
         let str = textDocumentProxy.documentContextBeforeInput
+        
+        var newString = str?.componentsSeparatedByString(" ")
+        
+        for spellCheckWord in newString! {
+            if spellCheckWord == "" {
+                newString?.removeLast()
+            }
+        }
+        let stringToPass = newString?.last
+        
         let textChecker = UITextChecker()
         let misspelledRange = textChecker.rangeOfMisspelledWordInString(
-            str!, range: NSRange(0..<str!.utf16.count),
+            stringToPass!, range: NSRange(0..<stringToPass!.utf16.count),
             startingAt: 0, wrap: false, language: "en_US")
         
         if misspelledRange.location != NSNotFound,
             let guesses = textChecker.guessesForWordRange(
-                misspelledRange, inString: str!, language: "en_US") as? [String]
+                misspelledRange, inString: stringToPass!, language: "en_US") as? [String]
         {
-            for _ in (str?.characters)! {
+            for _ in (stringToPass?.characters)! {
                 (textDocumentProxy as UIKeyInput).deleteBackward()
             }
-             let replaced = str!.stringByReplacingOccurrencesOfString(str!, withString: guesses.first!)
+             let replaced = stringToPass!.stringByReplacingOccurrencesOfString(stringToPass!, withString: guesses.first!)
             (textDocumentProxy as UIKeyInput).insertText(replaced)
             print("First guess: \(guesses.first)")
         } else {
