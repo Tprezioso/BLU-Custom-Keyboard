@@ -18,7 +18,7 @@ extension String {
     }
 }
 
-class BLUKeyboardViewController: UIInputViewController {
+class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var capsLockOn = true
     var topRow: UIView!
@@ -33,6 +33,9 @@ class BLUKeyboardViewController: UIInputViewController {
     var lexicon: UILexicon!
     var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
+    var popoverView: UIView!
+    var tableView:UITableView!
+    var items: [String] = ["Viper", "X", "Games"]
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -44,6 +47,32 @@ class BLUKeyboardViewController: UIInputViewController {
         super.viewDidLoad()
         print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
+
+    func setupTableView(viewToAdd :UIView) {
+        self.tableView = UITableView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        viewToAdd.addSubview(tableView)
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.items.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+        
+        cell.textLabel?.text = self.items[indexPath.row]
+        
+        return cell
+        
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        print("You selected cell #\(indexPath.row)!")
+    }
+
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
@@ -75,7 +104,7 @@ class BLUKeyboardViewController: UIInputViewController {
         self.topRow = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height / 3))
         
         let middleRowTitles = ["A","S","D","F","G","H","J","K","L"]
-        let middleButtons = createButtons(middleRowTitles)
+        var middleButtons = createButtons(middleRowTitles)
         self.middleRow = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         
         let bottomRowTitles = ["Z","X","C","V","B","N","M"]
@@ -89,7 +118,9 @@ class BLUKeyboardViewController: UIInputViewController {
         let spaceButton = createSpace()
         let changeKeyboard = createChangeKeyboard()
         let changeCharacter = createChangeCharacters()
+        let popupmenu = popUpAction()
         
+        middleButtons.append(popupmenu)
         lastRowButtons.append(changeCharacter)
         lastRowButtons.append(changeKeyboard)
         lastRowButtons.append(spaceButton)
@@ -238,6 +269,16 @@ class BLUKeyboardViewController: UIInputViewController {
         button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
         button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.charSetPressed(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }
+
+    func popUpAction() -> UIButton {
+        let button = UIButton(type: .System) as UIButton
+        button.setTitle("📫", forState: .Normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
+        button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.showAlertWasTapped(_:)), forControlEvents: .TouchUpInside)
         return button
     }
     
@@ -613,6 +654,12 @@ class BLUKeyboardViewController: UIInputViewController {
         }
     }
     
+    @IBAction func showAlertWasTapped(sender: UIButton) {
+        self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
+        setupTableView(popoverView)
+        //self.popoverView.addSubview(tableView)
+        view.addSubview(popoverView)
+    }
     func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).deleteBackward()
         (textDocumentProxy as UIKeyInput).insertText(".")
