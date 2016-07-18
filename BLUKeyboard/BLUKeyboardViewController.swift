@@ -72,6 +72,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         print("You selected cell #\(indexPath.row)!")
     }
+    
     func getTimeLine() {
         
         let account = ACAccountStore()
