@@ -66,7 +66,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        cell.textLabel?.text = self.dataSource[indexPath.row] as? String
+        cell.textLabel?.text = self.dataSource[indexPath.row]["text"] as? String
         return cell
     }
     
@@ -99,6 +99,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                     postRequest.performRequestWithHandler({(responseData: NSData!,
                                                             urlResponse: NSHTTPURLResponse!,
                                                             error: NSError!) -> Void in
+                                                            print("\(responseData)")
                                                             self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves) as! [AnyObject]
                         if self.dataSource.count != 0 {
                             dispatch_async(dispatch_get_main_queue()) {
