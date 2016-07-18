@@ -96,9 +96,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                                                  requestMethod: SLRequestMethod.GET,
                                                            URL: requestURL,
                                                     parameters: parameters)
-                                                            
                     postRequest.account = twitterAccount
-                                                            
                     postRequest.performRequestWithHandler({(responseData: NSData!,
                                                             urlResponse: NSHTTPURLResponse!,
                                                             error: NSError!) -> Void in
@@ -115,7 +113,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             }
         })
     }
-
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
