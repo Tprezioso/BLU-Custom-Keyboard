@@ -55,6 +55,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.tableView = UITableView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        tableView.estimatedRowHeight = 68.0
+        tableView.rowHeight = UITableViewAutomaticDimension
         getTimeLine()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         viewToAdd.addSubview(tableView)
@@ -67,6 +69,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
         cell.textLabel?.text = self.dataSource[indexPath.row]["text"] as? String
+       cell.textLabel?.numberOfLines = 0
         return cell
     }
     
@@ -86,7 +89,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                 account.accountsWithAccountType(accountType)
                 if arrayOfAccounts.count > 0 {
                     let twitterAccount = arrayOfAccounts.last as! ACAccount
-                    let requestURL = NSURL(string:"https://api.twitter.com/1.1/statuses/user_timeline.json")
+                    let requestURL = NSURL(string:"https://api.twitter.com/1.1/statuses/home_timeline.json")
                     let parameters = ["screen_name" : "@TomP1129","include_rts" : "0","trim_user" : "1", "count" : "20"]
                                                             
                     let postRequest = SLRequest(forServiceType:SLServiceTypeTwitter,
