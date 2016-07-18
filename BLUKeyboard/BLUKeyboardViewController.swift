@@ -38,7 +38,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var popoverView: UIView!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
-    var items: [String] = ["Viper", "X", "Games"]
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
