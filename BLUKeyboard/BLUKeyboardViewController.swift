@@ -102,7 +102,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                     postRequest.performRequestWithHandler({(responseData: NSData!,
                                                             urlResponse: NSHTTPURLResponse!,
                                                             error: NSError!) -> Void in
-                                                            print("\(responseData)")
                                                             self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.MutableLeaves) as! [AnyObject]
                         if self.dataSource.count != 0 {
                             dispatch_async(dispatch_get_main_queue()) {
