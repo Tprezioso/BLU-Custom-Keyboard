@@ -1,0 +1,6 @@
+framework module Pods_TheBLUMarketKeyboard {
+  umbrella header "Pods-TheBLUMarketKeyboard-umbrella.h"
+
+  export *
+  module * { export * }
+}
