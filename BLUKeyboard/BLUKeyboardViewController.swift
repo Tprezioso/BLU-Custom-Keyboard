@@ -737,22 +737,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
 
         if isOpenAccessGranted() == false {
-
-            
+          //MARK: FIX THIS:need to make custom alertView for keyboard
             print("NO FULL ACCESS 🙁")
-            
-            //            let alertController = UIAlertController(title: "Allow Access", message: "To Use the Social Media Part Of this keyboard you need to go into settings > general > keyboard > TheBLUMarketKeyboard > Allow Full Access", preferredStyle: .Alert)
-//            
-//            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
-//            }
-//            alertController.addAction(OKAction)
-//            
-//            self.presentViewController(alertController, animated: true) {
-//            }
         }
-        //getTimeLine()
         setupTableView(popoverView)
-        //self.popoverView.addSubview(tableView)
         view.addSubview(popoverView)
     }
     func doubleTapSpaceAction(button: UIButton) {
