@@ -92,25 +92,25 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             if let application = responder as? UIApplication {
                 return application
             }
-            
             responder = responder?.nextResponder()
         }
-        
         throw NSError(domain: "UIInputViewController+sharedApplication.swift", code: 1, userInfo: nil)
     }
     
     func openInTwitter() {
         let url = NSURL(string: "https://www.twitter.com/")!
-            openURL(url)
+        openURL(url)
     }
-
-    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         openInTwitter()
         tableView.removeFromSuperview()
         popoverView.removeFromSuperview()
         print("You selected cell #\(indexPath.row)!")
+    }
+    
+    func isOpenAccessGranted() -> Bool {
+        return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
     }
     
     func getTimeLine() {
@@ -735,7 +735,21 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-        self.popoverView.backgroundColor = UIColor.blueColor()
+
+        if isOpenAccessGranted() == false {
+
+            
+            print("NO FULL ACCESS 🙁")
+            
+            //            let alertController = UIAlertController(title: "Allow Access", message: "To Use the Social Media Part Of this keyboard you need to go into settings > general > keyboard > TheBLUMarketKeyboard > Allow Full Access", preferredStyle: .Alert)
+//            
+//            let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+//            }
+//            alertController.addAction(OKAction)
+//            
+//            self.presentViewController(alertController, animated: true) {
+//            }
+        }
         //getTimeLine()
         setupTableView(popoverView)
         //self.popoverView.addSubview(tableView)
