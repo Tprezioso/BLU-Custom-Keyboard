@@ -68,7 +68,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
         var tweetString = (self.dataSource[indexPath.row]["user"] as? [String: AnyObject])? ["name"] as? String
-        tweetString?.appendContentsOf((self.dataSource[indexPath.row]["text"] as? String)!)
+        tweetString!.appendContentsOf("\n\(self.dataSource[indexPath.row]["text"] as! String)")
         cell.textLabel?.text = tweetString
         cell.textLabel?.numberOfLines = 0
         return cell
