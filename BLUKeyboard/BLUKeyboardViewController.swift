@@ -38,6 +38,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var popoverView: UIView!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
+    var hasAccessToTwiter: Bool!
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -73,8 +75,41 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         cell.textLabel?.numberOfLines = 0
         return cell
     }
+
+    func openURL(url: NSURL) -> Bool {
+        do {
+            let application = try self.sharedApplication()
+            return application.performSelector(#selector(BLUKeyboardViewController.openURL(_:)), withObject: url) != nil
+        }
+        catch {
+            return false
+        }
+    }
+    
+    func sharedApplication() throws -> UIApplication {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                return application
+            }
+            
+            responder = responder?.nextResponder()
+        }
+        
+        throw NSError(domain: "UIInputViewController+sharedApplication.swift", code: 1, userInfo: nil)
+    }
+    
+    func openInTwitter() {
+        let url = NSURL(string: "https://www.twitter.com/")!
+            openURL(url)
+    }
+
+    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        openInTwitter()
+        tableView.removeFromSuperview()
+        popoverView.removeFromSuperview()
         print("You selected cell #\(indexPath.row)!")
     }
     
@@ -612,7 +647,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         view.addConstraints(view_constraint_H_Middle)
         view.addConstraints(view_constraint_H_Bottom)
         view.addConstraints(view_constraint_H_last)
-
     }
 
     //MARK: Button Actions
@@ -701,6 +735,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
+        self.popoverView.backgroundColor = UIColor.blueColor()
+        //getTimeLine()
         setupTableView(popoverView)
         //self.popoverView.addSubview(tableView)
         view.addSubview(popoverView)
