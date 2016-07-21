@@ -765,10 +765,12 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         self.alertView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
        // self.alertView.addSubview(closeAlertButton())
-
+        
         if isOpenAccessGranted() == false {
           //MARK: FIX THIS:need to make custom alertView for keyboard
-            view.addSubview(self.alertView)
+           
+            view.addSubview(createAlertView(popoverView))
+//            view.addSubview(popoverView)
             print("NO FULL ACCESS 🙁")
         } else {
             setupTableView(popoverView)
@@ -776,9 +778,42 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
     
+    func createAlertView(viewforAlert: UIView) -> UIView {
+        let viewforAlert = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
+        viewforAlert.translatesAutoresizingMaskIntoConstraints = false
+        
+        let viewDic = ["view":self.view, "alertView":viewforAlert]
+        
+        let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[view]",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil, views: viewDic)
+        
+        let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[view]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        viewforAlert.addConstraints(view1_constraint_H_Number)
+        viewforAlert.addConstraints(view1_constraint_V_Number)
+        
+        let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[alertView]",
+            options: NSLayoutFormatOptions.AlignAllLeading,
+            metrics: nil, views: viewDic)
+
+        let view1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[alertView]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        
+        view.addConstraints(view1_constraint_H)
+        view.addConstraints(view1_constraint_V)
+
+        return viewforAlert
+    }
+    
     func refresh() {
         getTimeLine()
-        //refreshControl.endRefreshing()
     }
     func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).deleteBackward()
