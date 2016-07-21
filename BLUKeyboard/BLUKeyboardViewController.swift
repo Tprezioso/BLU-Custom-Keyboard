@@ -62,11 +62,14 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         tableView.rowHeight = UITableViewAutomaticDimension
         getTimeLine()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        refreshControl = UIRefreshControl()
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(BLUKeyboardViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(refreshControl)
         viewToAdd.addSubview(tableView)
+        timedRefresh()
+    }
+
+    func timedRefresh() {
+        let myTimer = NSTimer(timeInterval: 10.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(myTimer, forMode: NSDefaultRunLoopMode)
+
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -171,6 +174,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func setupViews() {
         didPressCharacter = false
         didRotateView = false
+        setupViewHeight()
         
         let numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         let numbersButton = createButtons(numbers)
@@ -427,14 +431,22 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
 
     func setupViewHeight() {
-        let heightConstraint = NSLayoutConstraint(item:self.view,
-                                                  attribute: .Height,
-                                                  relatedBy: .Equal,
-                                                  toItem: nil,
-                                                  attribute: .NotAnAttribute,
-                                                  multiplier: 0.0,
-                                                  constant:216)
-        self.view.addConstraint(heightConstraint)
+//        self.view.translatesAutoresizingMaskIntoConstraints = false
+//        self.view = UIView(frame: CGRectMake(0,0, view.frame.size.width, UIScreen.mainScreen().bounds.size.height))
+//        let heightConstraint = NSLayoutConstraint(item:self.view,
+//                                                  attribute: .Height,
+//                                                  relatedBy: .Equal,
+//                                                  toItem: nil,
+//                                                  attribute: .NotAnAttribute,
+//                                                  multiplier: 0.0,
+//                                                  constant:UIScreen.mainScreen().bounds.size.height / 2)
+//        self.view.addConstraint(heightConstraint)
+//        let left = NSLayoutConstraint(item: self.view, attribute: .Left, relatedBy: .Equal, toItem: nil, attribute: .Left, multiplier: 1.0, constant: 1)
+//        self.view.addConstraint(left)
+//        let right = NSLayoutConstraint(item: self.view, attribute: .Right, relatedBy: .Equal, toItem: nil, attribute: .Right, multiplier: 1.0, constant: -1)
+//        self.view.addConstraint(right)
+//        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .Left, relatedBy: .Equal, toItem: nil, attribute: .Left, multiplier: 1.0, constant: 0.0))
+//        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .Bottom, relatedBy: .Equal, toItem: nil, attribute: .Bottom, multiplier: 1.0, constant: 0.0))
     }
     
     // MARK: View Layout with Visual Format
@@ -767,8 +779,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
     
-    func refresh(sender:AnyObject) {
+    func refresh() {
         getTimeLine()
+        //refreshControl.endRefreshing()
     }
     func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).deleteBackward()
