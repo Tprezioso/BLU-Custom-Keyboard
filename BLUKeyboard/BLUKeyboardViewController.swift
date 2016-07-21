@@ -41,7 +41,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var tableView:UITableView!
     var dataSource = [AnyObject]()
     var hasAccessToTwiter: Bool!
-    
+    var didGetInfo: Bool!
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -63,7 +63,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         getTimeLine()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         viewToAdd.addSubview(tableView)
-        timedRefresh()
+        if (didGetInfo != nil) {
+            timedRefresh()
+        }
     }
 
     func timedRefresh() {
@@ -157,8 +159,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                         }
                     })
                 }
+                self.didGetInfo = true
             } else {
                 print("Failed to access account")
+                self.didGetInfo = false
             }
         })
     }
@@ -431,7 +435,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
 
     func setupViewHeight() {
-//        self.view.translatesAutoresizingMaskIntoConstraints = false
 //        self.view = UIView(frame: CGRectMake(0,0, view.frame.size.width, UIScreen.mainScreen().bounds.size.height))
 //        let heightConstraint = NSLayoutConstraint(item:self.view,
 //                                                  attribute: .Height,
@@ -441,12 +444,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
 //                                                  multiplier: 0.0,
 //                                                  constant:UIScreen.mainScreen().bounds.size.height / 2)
 //        self.view.addConstraint(heightConstraint)
-//        let left = NSLayoutConstraint(item: self.view, attribute: .Left, relatedBy: .Equal, toItem: nil, attribute: .Left, multiplier: 1.0, constant: 1)
-//        self.view.addConstraint(left)
-//        let right = NSLayoutConstraint(item: self.view, attribute: .Right, relatedBy: .Equal, toItem: nil, attribute: .Right, multiplier: 1.0, constant: -1)
-//        self.view.addConstraint(right)
-//        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .Left, relatedBy: .Equal, toItem: nil, attribute: .Left, multiplier: 1.0, constant: 0.0))
-//        view.addConstraint(NSLayoutConstraint(item: self.view, attribute: .Bottom, relatedBy: .Equal, toItem: nil, attribute: .Bottom, multiplier: 1.0, constant: 0.0))
     }
     
     // MARK: View Layout with Visual Format
