@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
-            timestampString = "490739965.237771"
+            timestampString = "490809354.656401"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            startingLineNumber = "764"
+            endingLineNumber = "764"
+            landmarkName = "showAlertWasTapped(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

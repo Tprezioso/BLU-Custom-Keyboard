@@ -36,6 +36,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
     var popoverView: UIView!
+    var alertView: UIView!
+    var refreshControl: UIRefreshControl!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
     var hasAccessToTwiter: Bool!
@@ -60,6 +62,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         tableView.rowHeight = UITableViewAutomaticDimension
         getTimeLine()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(BLUKeyboardViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        tableView.addSubview(refreshControl)
         viewToAdd.addSubview(tableView)
     }
     
@@ -112,7 +118,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func isOpenAccessGranted() -> Bool {
         return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
     }
-    
+
     func getTimeLine() {
         
         let account = ACAccountStore()
@@ -359,6 +365,15 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
         button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.showAlertWasTapped(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }
+    func closeAlertButton() -> UIButton {
+        let button = UIButton(type: .System) as UIButton
+        button.setTitle("ⓧ", forState: .Normal)
+        //button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
+        button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
         return button
     }
     
@@ -733,15 +748,27 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
     
+    @IBAction func closeView(sender: UIButton) {
+        self.alertView.removeFromSuperview()
+    }
+    
     @IBAction func showAlertWasTapped(sender: UIButton) {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
+        self.alertView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
+       // self.alertView.addSubview(closeAlertButton())
 
         if isOpenAccessGranted() == false {
           //MARK: FIX THIS:need to make custom alertView for keyboard
+            view.addSubview(self.alertView)
             print("NO FULL ACCESS 🙁")
+        } else {
+            setupTableView(popoverView)
+            view.addSubview(popoverView)
         }
-        setupTableView(popoverView)
-        view.addSubview(popoverView)
+    }
+    
+    func refresh(sender:AnyObject) {
+        getTimeLine()
     }
     func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).deleteBackward()
