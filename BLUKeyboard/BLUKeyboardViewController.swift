@@ -69,7 +69,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
 
     func timedRefresh() {
-        let myTimer = NSTimer(timeInterval: 10.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
+        let myTimer = NSTimer(timeInterval: 30.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(myTimer, forMode: NSDefaultRunLoopMode)
 
     }
