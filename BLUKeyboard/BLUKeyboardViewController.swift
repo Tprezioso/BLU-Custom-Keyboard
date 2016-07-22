@@ -815,6 +815,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func refresh() {
         getTimeLine()
     }
+
     func doubleTapSpaceAction(button: UIButton) {
         (textDocumentProxy as UIKeyInput).deleteBackward()
         (textDocumentProxy as UIKeyInput).insertText(".")
