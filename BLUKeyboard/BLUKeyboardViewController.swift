@@ -49,6 +49,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var hasAccessToTwiter: Bool!
     var didGetInfo: Bool!
     var newView: UIView!
+    var pickSocialView: UIView!
+    var topView: UIView!
+    var bottomView: UIView!
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -281,23 +284,21 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
 
     func faceBookButton() -> UIButton {
-        var button = UIButton(type: .System) as UIButton
+        let button = UIButton(type: .System) as UIButton
         button.setTitle("Facebook", forState: .Normal)
-        button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clearColor()
-        button.setTitleColor(UIColor.clearColor(), forState: .Normal)
+        button.setTitleColor(UIColor.blackColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
         return button
     }
     
     func twitterButton() -> UIButton {
-        var button = UIButton(type: .System) as UIButton
+        let button = UIButton(type: .System) as UIButton
         button.setTitle("Twitter", forState: .Normal)
-        button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clearColor()
-        button.setTitleColor(UIColor.clearColor(), forState: .Normal)
+        button.setTitleColor(UIColor.blackColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
         return button
     }
@@ -691,14 +692,34 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
+        //MARK: Fix Constraints Issue
 //        setUpTwitterWithCheck()
-        let pickSocialView: UIView!
-        pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-        pickSocialView.backgroundColor = UIColor.whiteColor()
-        pickSocialView.addSubview(faceBookButton())
-        pickSocialView.addSubview(twitterButton())
+        self.pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        self.pickSocialView.backgroundColor = UIColor.whiteColor()
+        
+        let faceBook = [faceBookButton()]
+        let twitter = [twitterButton()]
+        
+        self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
+        self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
+
+        self.topView.translatesAutoresizingMaskIntoConstraints = false
+        self.bottomView.translatesAutoresizingMaskIntoConstraints = false
+        
+        for button in faceBook {
+            topView.addSubview(button)
+        }
+
+        for button in twitter {
+            bottomView.addSubview(button)
+        }
+        
+        self.pickSocialView.addSubview(topView)
+        self.pickSocialView.addSubview(bottomView)
         self.view.addSubview(pickSocialView)
-        socailViewConstraints()
+        socialViewConstraints()
+        addConstraints(faceBook, containingView: pickSocialView)
+        addConstraints(twitter, containingView: pickSocialView)
     }
     
     func setUpTwitterWithCheck() {
@@ -760,9 +781,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         return labelToSet
     }
    
-    func socailViewConstraints() {
+    func socialViewConstraints() {
         
-        let viewDic = ["view" : view, "facebook" : faceBookButton(), "twitter" : twitterButton()]
+        let viewDic = ["view" : view, "facebook" : topView, "twitter" : bottomView]
         
         let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
@@ -770,12 +791,12 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             metrics: nil, views: viewDic)
         
         let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(75)]",
+            "V:[view(60)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
         
-        faceBookButton().addConstraints(view1_constraint_H_Number)
-        faceBookButton().addConstraints(view1_constraint_V_Number)
+        topView.addConstraints(view1_constraint_H_Number)
+        topView.addConstraints(view1_constraint_V_Number)
 
         let view1_constraint_HT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
@@ -783,15 +804,15 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             metrics: nil, views: viewDic)
         
         let view1_constraint_VT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(75)]",
+            "V:[view(60)]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
         
-        twitterButton().addConstraints(view1_constraint_HT_Number)
-        twitterButton().addConstraints(view1_constraint_VT_Number)
+        bottomView.addConstraints(view1_constraint_HT_Number)
+        bottomView.addConstraints(view1_constraint_VT_Number)
         
         let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|[facebook]|",
+            "V:|[facebook][twitter]|",
             options: NSLayoutFormatOptions.AlignAllLeading,
             metrics: nil, views: viewDic)
         
