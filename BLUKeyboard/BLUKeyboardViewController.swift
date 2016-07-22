@@ -284,6 +284,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         var button = UIButton(type: .System) as UIButton
         button.setTitle("Facebook", forState: .Normal)
         button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clearColor()
         button.setTitleColor(UIColor.clearColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
@@ -294,6 +295,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         var button = UIButton(type: .System) as UIButton
         button.setTitle("Twitter", forState: .Normal)
         button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clearColor()
         button.setTitleColor(UIColor.clearColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
@@ -692,12 +694,11 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
 //        setUpTwitterWithCheck()
         let pickSocialView: UIView!
         pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-        
-        let facebookArray = ["Facebook"]
-        let twitterArray = ["twitter"]
-        
-        
-        
+        pickSocialView.backgroundColor = UIColor.whiteColor()
+        pickSocialView.addSubview(faceBookButton())
+        pickSocialView.addSubview(twitterButton())
+        self.view.addSubview(pickSocialView)
+        socailViewConstraints()
     }
     
     func setUpTwitterWithCheck() {
@@ -758,6 +759,57 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
 
         return labelToSet
     }
+   
+    func socailViewConstraints() {
+        
+        let viewDic = ["view" : view, "facebook" : faceBookButton(), "twitter" : twitterButton()]
+        
+        let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[view]",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil, views: viewDic)
+        
+        let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[view(75)]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        
+        faceBookButton().addConstraints(view1_constraint_H_Number)
+        faceBookButton().addConstraints(view1_constraint_V_Number)
+
+        let view1_constraint_HT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[view]",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil, views: viewDic)
+        
+        let view1_constraint_VT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[view(75)]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        
+        twitterButton().addConstraints(view1_constraint_HT_Number)
+        twitterButton().addConstraints(view1_constraint_VT_Number)
+        
+        let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|[facebook]|",
+            options: NSLayoutFormatOptions.AlignAllLeading,
+            metrics: nil, views: viewDic)
+        
+        let view1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[facebook]|",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+
+        let view1_constraint_HT = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[twitter]|",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        
+        view.addConstraints(view1_constraint_H)
+        view.addConstraints(view1_constraint_HT)
+        view.addConstraints(view1_constraint_V)
+    }
+
     
     func refresh() {
         getTimeLine()
