@@ -20,6 +20,12 @@ extension String {
     }
 }
 
+private class whiteStatusBarVC: UIViewController {
+    private override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+}
+
 class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var capsLockOn = true
@@ -42,6 +48,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var dataSource = [AnyObject]()
     var hasAccessToTwiter: Bool!
     var didGetInfo: Bool!
+    var newView: UIView!
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -147,8 +154,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                     postRequest.performRequestWithHandler({(responseData: NSData!,
                                                             urlResponse: NSHTTPURLResponse!,
                                                             error: NSError!) -> Void in
-                       
-                        
                         
                         self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
                         print("\(self.dataSource)")
@@ -376,11 +381,11 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         return button
     }
     func closeAlertButton() -> UIButton {
-        let button = UIButton(type: .System) as UIButton
-        button.setTitle("ⓧ", forState: .Normal)
-        //button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(white: 1.0, alpha: 1.0)
-        button.setTitleColor(UIColor.darkGrayColor(), forState: .Normal)
+        var button = UIButton(type: .System) as UIButton
+        button.setTitle("", forState: .Normal)
+        button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        button.backgroundColor = UIColor.clearColor()
+        button.setTitleColor(UIColor.clearColor(), forState: .Normal)
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
         return button
     }
@@ -757,20 +762,39 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
     
-    @IBAction func closeView(sender: UIButton) {
-        self.alertView.removeFromSuperview()
+    @IBAction func closeView(view: UIView) {
+        self.newView.removeFromSuperview()
+    }
+    
+    func setTextWithLineSpacing(label:UILabel,text:String,lineSpacing:CGFloat)
+    {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = lineSpacing
+        
+        let attrString = NSMutableAttributedString(string: text)
+        attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+        
+        label.attributedText = attrString
     }
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         self.alertView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-       // self.alertView.addSubview(closeAlertButton())
-        
+
         if isOpenAccessGranted() == false {
-          //MARK: FIX THIS:need to make custom alertView for keyboard
-           
-            view.addSubview(createAlertView(popoverView))
-//            view.addSubview(popoverView)
+            self.newView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+            let label = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.textColor = UIColor.blackColor()
+            label.numberOfLines = 0
+            label.text = "To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > TheBLUMarketKeyboard > Allow Full Access."
+            setTextWithLineSpacing(label, text: label.text!, lineSpacing: 10.0)
+            label.textAlignment = NSTextAlignment.Center
+            self.newView.addSubview(label)
+            self.newView.addSubview(closeAlertButton())
+            self.newView.backgroundColor = UIColor.whiteColor()
+            view.addSubview(self.newView)
+            labelConstraints(label)
             print("NO FULL ACCESS 🙁")
         } else {
             setupTableView(popoverView)
@@ -778,11 +802,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
     
-    func createAlertView(viewforAlert: UIView) -> UIView {
-        let viewforAlert = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-        viewforAlert.translatesAutoresizingMaskIntoConstraints = false
+    func labelConstraints(labelToSet: UILabel) -> UILabel {
         
-        let viewDic = ["view":self.view, "alertView":viewforAlert]
+        let viewDic = ["view": view, "labelToSet":labelToSet]
         
         let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
@@ -793,23 +815,24 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             "V:[view]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
-        viewforAlert.addConstraints(view1_constraint_H_Number)
-        viewforAlert.addConstraints(view1_constraint_V_Number)
+        
+        labelToSet.addConstraints(view1_constraint_H_Number)
+        labelToSet.addConstraints(view1_constraint_V_Number)
         
         let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[alertView]",
-            options: NSLayoutFormatOptions.AlignAllLeading,
+            "V:|[labelToSet]|",
+            options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
 
         let view1_constraint_H = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[alertView]",
+            "H:|[labelToSet]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
         
         view.addConstraints(view1_constraint_H)
         view.addConstraints(view1_constraint_V)
 
-        return viewforAlert
+        return labelToSet
     }
     
     func refresh() {
