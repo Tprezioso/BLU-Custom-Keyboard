@@ -269,6 +269,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         button.addTarget(self, action: #selector(BLUKeyboardViewController.showAlertWasTapped(_:)), forControlEvents: .TouchUpInside)
         return button
     }
+  
     func closeAlertButton() -> UIButton {
         var button = UIButton(type: .System) as UIButton
         button.setTitle("", forState: .Normal)
@@ -278,6 +279,27 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
         return button
     }
+
+    func faceBookButton() -> UIButton {
+        var button = UIButton(type: .System) as UIButton
+        button.setTitle("Facebook", forState: .Normal)
+        button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        button.backgroundColor = UIColor.clearColor()
+        button.setTitleColor(UIColor.clearColor(), forState: .Normal)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }
+    
+    func twitterButton() -> UIButton {
+        var button = UIButton(type: .System) as UIButton
+        button.setTitle("Twitter", forState: .Normal)
+        button = UIButton(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        button.backgroundColor = UIColor.clearColor()
+        button.setTitleColor(UIColor.clearColor(), forState: .Normal)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
+        return button
+    }
+
     
     // MARK:Button Constraints
     func addConstraints(buttons: [UIButton], containingView: UIView){
@@ -667,9 +689,21 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
+//        setUpTwitterWithCheck()
+        let pickSocialView: UIView!
+        pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        
+        let facebookArray = ["Facebook"]
+        let twitterArray = ["twitter"]
+        
+        
+        
+    }
+    
+    func setUpTwitterWithCheck() {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         self.alertView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-
+        
         if isOpenAccessGranted() == false {
             self.newView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
             let label = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
@@ -689,6 +723,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             setupTableView(popoverView)
             view.addSubview(popoverView)
         }
+
     }
     
     func labelConstraints(labelToSet: UILabel) -> UILabel {
