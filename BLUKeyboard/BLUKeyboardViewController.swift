@@ -696,6 +696,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
 //        setUpTwitterWithCheck()
         self.pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
         self.pickSocialView.backgroundColor = UIColor.whiteColor()
+        self.pickSocialView.translatesAutoresizingMaskIntoConstraints = false
         
         let faceBook = [faceBookButton()]
         let twitter = [twitterButton()]
@@ -713,13 +714,13 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         for button in twitter {
             bottomView.addSubview(button)
         }
-        
+      
+        self.view.addSubview(pickSocialView)
         self.pickSocialView.addSubview(topView)
         self.pickSocialView.addSubview(bottomView)
-        self.view.addSubview(pickSocialView)
         socialViewConstraints()
-        addConstraints(faceBook, containingView: pickSocialView)
-        addConstraints(twitter, containingView: pickSocialView)
+        addConstraints(faceBook, containingView: topView)
+        addConstraints(twitter, containingView: bottomView)
     }
     
     func setUpTwitterWithCheck() {
@@ -783,15 +784,28 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
    
     func socialViewConstraints() {
         
-        let viewDic = ["view" : view, "facebook" : topView, "twitter" : bottomView]
+        let viewDic = ["view" : view, "facebook" : topView, "twitter" : bottomView, "social": pickSocialView]
+
+        let viewpick_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:[view]",
+            options: NSLayoutFormatOptions(rawValue: 0),
+            metrics: nil, views: viewDic)
         
+        let viewpick_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:[view]",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+        
+        pickSocialView.addConstraints(viewpick_constraint_H_Number)
+        pickSocialView.addConstraints(viewpick_constraint_V_Number)
+
         let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
             "H:[view]",
             options: NSLayoutFormatOptions(rawValue: 0),
             metrics: nil, views: viewDic)
         
         let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(60)]",
+            "V:[view]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
         
@@ -804,15 +818,25 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             metrics: nil, views: viewDic)
         
         let view1_constraint_VT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view(60)]",
+            "V:[view]",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
         
         bottomView.addConstraints(view1_constraint_HT_Number)
         bottomView.addConstraints(view1_constraint_VT_Number)
         
+        let view1_constraint_Vpick = NSLayoutConstraint.constraintsWithVisualFormat(
+            "V:|[social]|",
+            options: NSLayoutFormatOptions.AlignAllLeading,
+            metrics: nil, views: viewDic)
+        
+        let view1_constraint_Hpick = NSLayoutConstraint.constraintsWithVisualFormat(
+            "H:|[social]|",
+            options: NSLayoutFormatOptions(rawValue:0),
+            metrics: nil, views: viewDic)
+
         let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|[facebook][twitter]|",
+            "V:|-[facebook][twitter]-|",
             options: NSLayoutFormatOptions.AlignAllLeading,
             metrics: nil, views: viewDic)
         
@@ -825,7 +849,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             "H:|[twitter]|",
             options: NSLayoutFormatOptions(rawValue:0),
             metrics: nil, views: viewDic)
-        
+        view.addConstraints(view1_constraint_Hpick)
+        view.addConstraints(view1_constraint_Vpick)
         view.addConstraints(view1_constraint_H)
         view.addConstraints(view1_constraint_HT)
         view.addConstraints(view1_constraint_V)
