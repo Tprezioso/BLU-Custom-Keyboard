@@ -60,117 +60,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         super.viewDidLoad()
         print("PORTRAIT!!!!!\(view.frame.size.width) X \(view.frame.size.height)")
     }
-
-    func setupTableView(viewToAdd :UIView) {
-        self.tableView = UITableView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        tableView.estimatedRowHeight = 68.0
-        tableView.rowHeight = UITableViewAutomaticDimension
-        getTimeLine()
-        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        viewToAdd.addSubview(tableView)
-        if (didGetInfo != nil) {
-            timedRefresh()
-        }
-    }
-
-    func timedRefresh() {
-        let myTimer = NSTimer(timeInterval: 30.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
-        NSRunLoop.mainRunLoop().addTimer(myTimer, forMode: NSDefaultRunLoopMode)
-
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dataSource.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
-        var tweetString = (self.dataSource[indexPath.row]["user"] as? [String: AnyObject])? ["name"] as? String
-        tweetString!.appendContentsOf("\n\(self.dataSource[indexPath.row]["text"] as! String)")
-        cell.textLabel?.text = tweetString
-        cell.textLabel?.numberOfLines = 0
-        return cell
-    }
-
-    func openURL(url: NSURL) -> Bool {
-        do {
-            let application = try self.sharedApplication()
-            return application.performSelector(#selector(BLUKeyboardViewController.openURL(_:)), withObject: url) != nil
-        }
-        catch {
-            return false
-        }
-    }
-    
-    func sharedApplication() throws -> UIApplication {
-        var responder: UIResponder? = self
-        while responder != nil {
-            if let application = responder as? UIApplication {
-                return application
-            }
-            responder = responder?.nextResponder()
-        }
-        throw NSError(domain: "UIInputViewController+sharedApplication.swift", code: 1, userInfo: nil)
-    }
-    
-    func openInTwitter() {
-        let url = NSURL(string: "https://www.twitter.com/")!
-        openURL(url)
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        openInTwitter()
-        tableView.removeFromSuperview()
-        popoverView.removeFromSuperview()
-        print("You selected cell #\(indexPath.row)!")
-    }
-    
-    func isOpenAccessGranted() -> Bool {
-        return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
-    }
-
-    func getTimeLine() {
-        
-        let account = ACAccountStore()
-        let accountType = account.accountTypeWithAccountTypeIdentifier(
-            ACAccountTypeIdentifierTwitter)
-        
-        account.requestAccessToAccountsWithType(accountType, options: nil, completion: {(success: Bool, error: NSError!) -> Void in
-            if success {
-                let arrayOfAccounts =
-                account.accountsWithAccountType(accountType)
-                if arrayOfAccounts.count > 0 {
-                    let twitterAccount = arrayOfAccounts.last as! ACAccount
-                    let requestURL = NSURL(string:"https://api.twitter.com/1.1/statuses/home_timeline.json")
-                    let parameters = ["screen_name" : "@TomP1129","include_rts" : "0","trim_user" : "0", "count" : "20"]
-                                                            
-                    let postRequest = SLRequest(forServiceType:SLServiceTypeTwitter,
-                                                 requestMethod: SLRequestMethod.GET,
-                                                           URL: requestURL,
-                                                    parameters: parameters)
-                    postRequest.account = twitterAccount
-                    postRequest.performRequestWithHandler({(responseData: NSData!,
-                                                            urlResponse: NSHTTPURLResponse!,
-                                                            error: NSError!) -> Void in
-                        
-                        self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
-                        print("\(self.dataSource)")
-                        if self.dataSource.count != 0 {
-                            dispatch_async(dispatch_get_main_queue()) {
-                            self.tableView.reloadData()
-                            }
-                        }
-                    })
-                }
-                self.didGetInfo = true
-            } else {
-                print("Failed to access account")
-                self.didGetInfo = false
-            }
-        })
-    }
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if UIScreen.mainScreen().bounds.size.width > UIScreen.mainScreen().bounds.size.height {
@@ -888,5 +777,117 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                 }
             }
         }
+    }
+    
+    // MARK: TableView
+    func setupTableView(viewToAdd :UIView) {
+        self.tableView = UITableView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        tableView.estimatedRowHeight = 68.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        getTimeLine()
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        viewToAdd.addSubview(tableView)
+        if (didGetInfo != nil) {
+            timedRefresh()
+        }
+    }
+    
+    func timedRefresh() {
+        let myTimer = NSTimer(timeInterval: 30.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
+        NSRunLoop.mainRunLoop().addTimer(myTimer, forMode: NSDefaultRunLoopMode)
+        
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.dataSource.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell")! as UITableViewCell
+        var tweetString = (self.dataSource[indexPath.row]["user"] as? [String: AnyObject])? ["name"] as? String
+        tweetString!.appendContentsOf("\n\(self.dataSource[indexPath.row]["text"] as! String)")
+        cell.textLabel?.text = tweetString
+        cell.textLabel?.numberOfLines = 0
+        return cell
+    }
+    
+    func openURL(url: NSURL) -> Bool {
+        do {
+            let application = try self.sharedApplication()
+            return application.performSelector(#selector(BLUKeyboardViewController.openURL(_:)), withObject: url) != nil
+        }
+        catch {
+            return false
+        }
+    }
+    
+    func sharedApplication() throws -> UIApplication {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                return application
+            }
+            responder = responder?.nextResponder()
+        }
+        throw NSError(domain: "UIInputViewController+sharedApplication.swift", code: 1, userInfo: nil)
+    }
+    
+    func openInTwitter() {
+        let url = NSURL(string: "https://www.twitter.com/")!
+        openURL(url)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        openInTwitter()
+        tableView.removeFromSuperview()
+        popoverView.removeFromSuperview()
+        print("You selected cell #\(indexPath.row)!")
+    }
+    
+    func isOpenAccessGranted() -> Bool {
+        return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
+    }
+    
+    func getTimeLine() {
+        
+        let account = ACAccountStore()
+        let accountType = account.accountTypeWithAccountTypeIdentifier(
+            ACAccountTypeIdentifierTwitter)
+        
+        account.requestAccessToAccountsWithType(accountType, options: nil, completion: {(success: Bool, error: NSError!) -> Void in
+            if success {
+                let arrayOfAccounts =
+                    account.accountsWithAccountType(accountType)
+                if arrayOfAccounts.count > 0 {
+                    let twitterAccount = arrayOfAccounts.last as! ACAccount
+                    let requestURL = NSURL(string:"https://api.twitter.com/1.1/statuses/home_timeline.json")
+                    let parameters = ["screen_name" : "@TomP1129","include_rts" : "0","trim_user" : "0", "count" : "20"]
+                    
+                    let postRequest = SLRequest(forServiceType:SLServiceTypeTwitter,
+                        requestMethod: SLRequestMethod.GET,
+                        URL: requestURL,
+                        parameters: parameters)
+                    postRequest.account = twitterAccount
+                    postRequest.performRequestWithHandler({(responseData: NSData!,
+                        urlResponse: NSHTTPURLResponse!,
+                        error: NSError!) -> Void in
+                        
+                        self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
+                        print("\(self.dataSource)")
+                        if self.dataSource.count != 0 {
+                            dispatch_async(dispatch_get_main_queue()) {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    })
+                }
+                self.didGetInfo = true
+            } else {
+                print("Failed to access account")
+                self.didGetInfo = false
+            }
+        })
     }
 }
