@@ -825,7 +825,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
 
     
     func refresh() {
-        getTimeLine()
+        getTwitterTimeLine()
     }
 
     func doubleTapSpaceAction(button: UIButton) {
@@ -886,7 +886,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.tableView.dataSource = self
         tableView.estimatedRowHeight = 68.0
         tableView.rowHeight = UITableViewAutomaticDimension
-        getTimeLine()
+        getTwitterTimeLine()
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         viewToAdd.addSubview(tableView)
         if (didGetInfo != nil) {
@@ -950,7 +950,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
     }
     
-    func getTimeLine() {
+    func getTwitterTimeLine() {
         
         let account = ACAccountStore()
         let accountType = account.accountTypeWithAccountTypeIdentifier(
@@ -989,5 +989,49 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                 self.didGetInfo = false
             }
         })
+    }
+    
+    func getFacebookTimeline() {
+        let accountStore = ACAccountStore()
+        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(
+            ACAccountTypeIdentifierFacebook)
+        
+        let postingOptions = [ACFacebookAppIdKey:"857311861041303",
+                              ACFacebookPermissionsKey: ["email"],
+                              ACFacebookAudienceKey: ACFacebookAudienceFriends]
+        
+        accountStore.requestAccessToAccountsWithType(accountType, options: postingOptions as! [NSObject : AnyObject]) {
+            success, error in
+                if success {
+                    let options = [ACFacebookAppIdKey:"857311861041303", ACFacebookPermissionsKey: ["publish_actions"],ACFacebookAudienceKey: ACFacebookAudienceFriends]
+                                                            
+                    accountStore.requestAccessToAccountsWithType(accountType, options: options as! [NSObject : AnyObject]) {
+                        success, error in
+                            if success {
+                                    var accountsArray = accountStore.accountsWithAccountType(accountType)
+                                        if accountsArray.count > 0 {
+                                            let facebookAccount = accountsArray[0] as! ACAccount
+                                            
+                                            var parameters = Dictionary <String, AnyObject>()
+                                            parameters["access_token"] = facebookAccount.credential.oauthToken
+                                            parameters["message"] = "My first Facebook post from iOS 8"
+                                                                                                                    
+                                            let feedURL = NSURL(string:"https://graph.facebook.com/me/feed")
+                                                                                                                    
+                                            let postRequest = SLRequest(forServiceType:SLServiceTypeFacebook, requestMethod: SLRequestMethod.POST, URL: feedURL, parameters: parameters)
+                                            postRequest.performRequestWithHandler({(responseData: NSData!, urlResponse: NSHTTPURLResponse!,error: NSError!) -> Void in
+                                                print("Twitter HTTP response \(urlResponse.statusCode)")
+                                            })
+                                        }
+                                    } else {
+                                        print("Access denied")
+                                        print(error.localizedDescription)
+                                    }
+                                }
+                            } else {
+                                print("Access denied")
+                                print(error.localizedDescription)
+                        }
+        }
     }
 }
