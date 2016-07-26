@@ -299,7 +299,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor.clearColor()
         button.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        button.addTarget(self, action: #selector(BLUKeyboardViewController.closeView(_:)), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(BLUKeyboardViewController.twitterTapped), forControlEvents: .TouchUpInside)
         return button
     }
 
@@ -690,10 +690,13 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         
         label.attributedText = attrString
     }
+
+    func twitterTapped() {
+        setUpTwitterWithCheck()
+    }
     
     @IBAction func showAlertWasTapped(sender: UIButton) {
         //MARK: Fix Constraints Issue
-//        setUpTwitterWithCheck()
         self.pickSocialView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
         self.pickSocialView.backgroundColor = UIColor.whiteColor()
         self.pickSocialView.translatesAutoresizingMaskIntoConstraints = false
@@ -704,8 +707,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
 
-        self.topView.backgroundColor = UIColor.redColor()
-        self.bottomView.backgroundColor = UIColor.blueColor()
+//        self.pickSocialView.alpha = 0.5
+//        self.topView.alpha = 0.5
+//        self.bottomView.alpha = 0.5
+        
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         
