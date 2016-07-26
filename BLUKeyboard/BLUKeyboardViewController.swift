@@ -704,6 +704,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
 
+        self.topView.backgroundColor = UIColor.redColor()
+        self.bottomView.backgroundColor = UIColor.blueColor()
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -785,45 +787,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func socialViewConstraints() {
         
         let viewDic = ["view" : view, "facebook" : topView, "twitter" : bottomView, "social": pickSocialView]
-
-        let viewpick_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[view]",
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil, views: viewDic)
-        
-        let viewpick_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view]",
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil, views: viewDic)
-        
-        pickSocialView.addConstraints(viewpick_constraint_H_Number)
-        pickSocialView.addConstraints(viewpick_constraint_V_Number)
-
-        let view1_constraint_H_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[view]",
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil, views: viewDic)
-        
-        let view1_constraint_V_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view]",
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil, views: viewDic)
-        
-        topView.addConstraints(view1_constraint_H_Number)
-        topView.addConstraints(view1_constraint_V_Number)
-
-        let view1_constraint_HT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "H:[view]",
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil, views: viewDic)
-        
-        let view1_constraint_VT_Number = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:[view]",
-            options: NSLayoutFormatOptions(rawValue:0),
-            metrics: nil, views: viewDic)
-        
-        bottomView.addConstraints(view1_constraint_HT_Number)
-        bottomView.addConstraints(view1_constraint_VT_Number)
         
         let view1_constraint_Vpick = NSLayoutConstraint.constraintsWithVisualFormat(
             "V:|[social]|",
@@ -836,7 +799,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             metrics: nil, views: viewDic)
 
         let view1_constraint_V = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-[facebook][twitter]-|",
+            "V:|-[twitter(90)][facebook(90)]-|",
             options: NSLayoutFormatOptions.AlignAllLeading,
             metrics: nil, views: viewDic)
         
