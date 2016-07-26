@@ -32,12 +32,11 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var didPressCharacter: Bool!
     var didRotateView: Bool!
     var lexicon: UILexicon!
-    var didTapSpaceForSpellCheck: Bool!
     var popoverView: UIView!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
     var didGetInfo: Bool!
-    var newView: UIView!
+    var alertView: UIView!
     var pickSocialView: UIView!
     var topView: UIView!
     var bottomView: UIView!
@@ -664,7 +663,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     }
     
     @IBAction func closeView(view: UIView) {
-        self.newView.removeFromSuperview()
+        self.alertView.removeFromSuperview()
     }
     
     func setTextWithLineSpacing(label:UILabel,text:String,lineSpacing:CGFloat)
@@ -719,7 +718,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         
         if isOpenAccessGranted() == false {
-            self.newView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+            self.alertView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
             let label = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
             label.translatesAutoresizingMaskIntoConstraints = false
             label.textColor = UIColor.blackColor()
@@ -727,10 +726,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             label.text = "To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access."
             setTextWithLineSpacing(label, text: label.text!, lineSpacing: 10.0)
             label.textAlignment = NSTextAlignment.Center
-            self.newView.addSubview(label)
-            self.newView.addSubview(closeAlertButton())
-            self.newView.backgroundColor = UIColor.whiteColor()
-            view.addSubview(self.newView)
+            self.alertView.addSubview(label)
+            self.alertView.addSubview(closeAlertButton())
+            self.alertView.backgroundColor = UIColor.whiteColor()
+            view.addSubview(self.alertView)
             labelConstraints(label)
             print("NO FULL ACCESS 🙁")
         } else {
