@@ -55,6 +55,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         setupViews()
+        getFacebookTimeline()
         view.layoutIfNeeded()
     }
 
@@ -996,14 +997,14 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(
             ACAccountTypeIdentifierFacebook)
         
-        let postingOptions = [ACFacebookAppIdKey:"857311861041303",
+        let postingOptions = [ACFacebookAppIdKey:"fb857311861041303",
                               ACFacebookPermissionsKey: ["email"],
                               ACFacebookAudienceKey: ACFacebookAudienceFriends]
         
         accountStore.requestAccessToAccountsWithType(accountType, options: postingOptions as! [NSObject : AnyObject]) {
             success, error in
                 if success {
-                    let options = [ACFacebookAppIdKey:"857311861041303", ACFacebookPermissionsKey: ["publish_actions"], ACFacebookAudienceKey: ACFacebookAudienceFriends]
+                    let options = [ACFacebookAppIdKey:"fb857311861041303", ACFacebookPermissionsKey: ["publish_actions"], ACFacebookAudienceKey: ACFacebookAudienceFriends]
                                                             
                     accountStore.requestAccessToAccountsWithType(accountType, options: options as! [NSObject : AnyObject]) {
                         success, error in
