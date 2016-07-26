@@ -19,12 +19,6 @@ extension String {
     }
 }
 
-private class whiteStatusBarVC: UIViewController {
-    private override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
-}
-
 class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var capsLockOn = true
