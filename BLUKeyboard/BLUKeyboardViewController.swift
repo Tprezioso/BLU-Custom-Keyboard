@@ -707,10 +707,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
 
         getFacebookTimeline()
-
-//        self.pickSocialView.alpha = 0.5
-//        self.topView.alpha = 0.5
-//        self.bottomView.alpha = 0.5
         
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
