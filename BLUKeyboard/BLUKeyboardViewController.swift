@@ -1003,7 +1003,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         accountStore.requestAccessToAccountsWithType(accountType, options: postingOptions as! [NSObject : AnyObject]) {
             success, error in
                 if success {
-                    let options = [ACFacebookAppIdKey:"857311861041303", ACFacebookPermissionsKey: ["publish_actions"],ACFacebookAudienceKey: ACFacebookAudienceFriends]
+                    let options = [ACFacebookAppIdKey:"857311861041303", ACFacebookPermissionsKey: ["publish_actions"], ACFacebookAudienceKey: ACFacebookAudienceFriends]
                                                             
                     accountStore.requestAccessToAccountsWithType(accountType, options: options as! [NSObject : AnyObject]) {
                         success, error in
@@ -1018,8 +1018,16 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                                                                                                                     
                                             let feedURL = NSURL(string:"https://graph.facebook.com/me/feed")
                                                                                                                     
-                                            let postRequest = SLRequest(forServiceType:SLServiceTypeFacebook, requestMethod: SLRequestMethod.POST, URL: feedURL, parameters: parameters)
+                                            let postRequest = SLRequest(forServiceType:SLServiceTypeFacebook, requestMethod: SLRequestMethod.GET, URL: feedURL, parameters: parameters)
                                             postRequest.performRequestWithHandler({(responseData: NSData!, urlResponse: NSHTTPURLResponse!,error: NSError!) -> Void in
+                                               
+                                                self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
+                                                print("\(self.dataSource)")
+                                                if self.dataSource.count != 0 {
+                                                    dispatch_async(dispatch_get_main_queue()) {
+                                                        self.tableView.reloadData()
+                                                    }
+                                                }
                                                 print("Twitter HTTP response \(urlResponse.statusCode)")
                                             })
                                         }
