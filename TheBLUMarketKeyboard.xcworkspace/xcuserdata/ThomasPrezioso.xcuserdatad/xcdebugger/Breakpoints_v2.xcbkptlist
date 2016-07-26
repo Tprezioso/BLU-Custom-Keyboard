@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
-            timestampString = "491248575.52654"
+            timestampString = "491255016.950922"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
+            startingLineNumber = "699"
+            endingLineNumber = "699"
             landmarkName = "showAlertWasTapped(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
-            timestampString = "491248575.52654"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "999"
-            endingLineNumber = "999"
-            landmarkName = "getFacebookTimeline()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
