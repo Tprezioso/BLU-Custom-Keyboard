@@ -661,9 +661,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             stringToPass!, range: NSRange(0..<stringToPass!.utf16.count),
             startingAt: 0, wrap: false, language: "en_US")
         if misspelledRange.location != NSNotFound,
-            let guesses = textChecker.guessesForWordRange(
-                misspelledRange, inString: stringToPass!, language: "en_US") as? [String]
-        {
+            let guesses = textChecker.guessesForWordRange(misspelledRange, inString: stringToPass!, language: "en_US") as? [String] {
             for _ in (stringToPass?.characters)! {
                 (textDocumentProxy as UIKeyInput).deleteBackward()
             }
