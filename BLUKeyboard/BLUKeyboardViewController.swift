@@ -35,7 +35,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
     var popoverView: UIView!
-    var alertView: UIView!
     var refreshControl: UIRefreshControl!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
@@ -721,7 +720,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     func setUpTwitterWithCheck() {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-        self.alertView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         
         if isOpenAccessGranted() == false {
             self.newView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
