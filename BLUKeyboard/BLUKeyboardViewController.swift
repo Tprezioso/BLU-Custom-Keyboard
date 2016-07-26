@@ -10,7 +10,6 @@ import Social
 import Accounts
 
 extension String {
-    
     var first: String {
         return String(characters.prefix(1))
     }
