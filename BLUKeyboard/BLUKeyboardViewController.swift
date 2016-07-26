@@ -55,7 +55,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         setupViews()
-        getFacebookTimeline()
         view.layoutIfNeeded()
     }
 
@@ -706,6 +705,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         
         self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
+
+        getFacebookTimeline()
 
 //        self.pickSocialView.alpha = 0.5
 //        self.topView.alpha = 0.5
