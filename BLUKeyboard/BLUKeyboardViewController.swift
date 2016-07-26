@@ -35,7 +35,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
     var popoverView: UIView!
-    var refreshControl: UIRefreshControl!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
     var hasAccessToTwiter: Bool!
