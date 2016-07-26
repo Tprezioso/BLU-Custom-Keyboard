@@ -32,12 +32,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var didPressCharacter: Bool!
     var didRotateView: Bool!
     var lexicon: UILexicon!
-    var currentString: String!
     var didTapSpaceForSpellCheck: Bool!
     var popoverView: UIView!
     var tableView:UITableView!
     var dataSource = [AnyObject]()
-    var hasAccessToTwiter: Bool!
     var didGetInfo: Bool!
     var newView: UIView!
     var pickSocialView: UIView!
