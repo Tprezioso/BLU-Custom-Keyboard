@@ -735,7 +735,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
             label.translatesAutoresizingMaskIntoConstraints = false
             label.textColor = UIColor.blackColor()
             label.numberOfLines = 0
-            label.text = "To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > TheBLUMarketKeyboard > Allow Full Access."
+            label.text = "To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > SocialBoard > Allow Full Access."
             setTextWithLineSpacing(label, text: label.text!, lineSpacing: 10.0)
             label.textAlignment = NSTextAlignment.Center
             self.newView.addSubview(label)
