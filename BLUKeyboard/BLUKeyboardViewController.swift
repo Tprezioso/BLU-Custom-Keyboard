@@ -939,15 +939,26 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         return UIPasteboard.generalPasteboard().isKindOfClass(UIPasteboard)
     }
     
+    func checkToSeeIfDataIsThere() {
+        if self.dataSource.isEmpty {
+            self.didGetData = false
+        }
+        if self.didGetData == false {
+            customAlert("Please go into setting and sign into you account")
+            self.tableView.hidden = true
+        } else {
+            self.tableView.hidden = false
+        }
+    }
+
+    // MARK: API calls for Facbook and Twitter
     func getTwitterTimeLine() {
         
         let account = ACAccountStore()
         let accountType = account.accountTypeWithAccountTypeIdentifier(
             ACAccountTypeIdentifierTwitter)
-        //self.didGetData = false
         account.requestAccessToAccountsWithType(accountType, options: nil, completion: {(success: Bool, error: NSError!) -> Void in
             if success {
-                self.didGetData = true
                 let arrayOfAccounts =
                     account.accountsWithAccountType(accountType)
                 if arrayOfAccounts.count > 0 {
@@ -983,18 +994,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         checkToSeeIfDataIsThere()
     }
     
-    func checkToSeeIfDataIsThere() {
-        if self.dataSource.isEmpty {
-            self.didGetData = false
-        }
-        if self.didGetData == false {
-            customAlert("Please go into setting and sign into you account")
-            self.tableView.hidden = true
-        } else {
-            self.tableView.hidden = false
-        }
-    }
-    
     func getFacebookTimeline() {
         let accountStore = ACAccountStore()
         let accountType = accountStore.accountTypeWithAccountTypeIdentifier(
@@ -1011,39 +1010,39 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                                                             
                     accountStore.requestAccessToAccountsWithType(accountType, options: options as! [NSObject : AnyObject]) {
                         success, error in
-                            if success {
-                                    var accountsArray = accountStore.accountsWithAccountType(accountType)
-                                        if accountsArray.count > 0 {
-                                            let facebookAccount = accountsArray[0] as! ACAccount
+                        if success {
+                            var accountsArray = accountStore.accountsWithAccountType(accountType)
+                                if accountsArray.count > 0 {
+                                    let facebookAccount = accountsArray[0] as! ACAccount
                                             
-                                            var parameters = Dictionary <String, AnyObject>()
-                                            parameters["access_token"] = facebookAccount.credential.oauthToken
-                                            parameters["message"] = "My first Facebook post from iOS 8"
+                                    var parameters = Dictionary <String, AnyObject>()
+                                    parameters["access_token"] = facebookAccount.credential.oauthToken
+                                    parameters["message"] = "My first Facebook post from iOS 8"
                                                                                                                     
-                                            let feedURL = NSURL(string:"https://graph.facebook.com/me/feed")
+                                    let feedURL = NSURL(string:"https://graph.facebook.com/me/feed")
                                                                                                                     
-                                            let postRequest = SLRequest(forServiceType:SLServiceTypeFacebook, requestMethod: SLRequestMethod.GET, URL: feedURL, parameters: parameters)
-                                            postRequest.performRequestWithHandler({(responseData: NSData!, urlResponse: NSHTTPURLResponse!,error: NSError!) -> Void in
+                                    let postRequest = SLRequest(forServiceType:SLServiceTypeFacebook, requestMethod: SLRequestMethod.GET, URL: feedURL, parameters: parameters)
+                                    postRequest.performRequestWithHandler({(responseData: NSData!, urlResponse: NSHTTPURLResponse!,error: NSError!) -> Void in
                                                
-                                                self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
-                                                print("\(self.dataSource)")
-                                                if self.dataSource.count != 0 {
-                                                    dispatch_async(dispatch_get_main_queue()) {
-                                                        self.tableView.reloadData()
-                                                    }
+                                    self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
+                                        print("\(self.dataSource)")
+                                            if self.dataSource.count != 0 {
+                                                dispatch_async(dispatch_get_main_queue()) {
+                                                    self.tableView.reloadData()
                                                 }
-                                                print("Twitter HTTP response \(urlResponse.statusCode)")
-                                            })
-                                        }
-                                    } else {
-                                        print("Access denied")
-                                        print(error.localizedDescription)
-                                    }
+                                            }
+                                        print("Twitter HTTP response \(urlResponse.statusCode)")
+                                    })
                                 }
                             } else {
                                 print("Access denied")
                                 print(error.localizedDescription)
+                            }
                         }
+                    } else {
+                        print("Access denied")
+                        print(error.localizedDescription)
+                    }
         }
     }
 }
