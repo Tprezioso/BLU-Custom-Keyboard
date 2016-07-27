@@ -40,6 +40,8 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var pickSocialView: UIView!
     var topView: UIView!
     var bottomView: UIView!
+    var didGetData = true
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
@@ -693,7 +695,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
 
-        getFacebookTimeline()
+        //getFacebookTimeline()
         
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
@@ -716,27 +718,34 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     func setUpTwitterWithCheck() {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-        
+        getTwitterTimeLine()
         if isOpenAccessGranted() == false {
-            self.alertView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-            let label = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.textColor = UIColor.blackColor()
-            label.numberOfLines = 0
-            label.text = "To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access."
-            setTextWithLineSpacing(label, text: label.text!, lineSpacing: 10.0)
-            label.textAlignment = NSTextAlignment.Center
-            self.alertView.addSubview(label)
-            self.alertView.addSubview(closeAlertButton())
-            self.alertView.backgroundColor = UIColor.whiteColor()
-            view.addSubview(self.alertView)
-            labelConstraints(label)
+            customAlert("To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access.")
             print("NO FULL ACCESS 🙁")
         } else {
-            setupTableView(popoverView)
-            view.addSubview(popoverView)
+            if didGetData == false {
+                customAlert("Please go into setting an login and grant access")
+            } else {
+                setupTableView(popoverView)
+                view.addSubview(popoverView)
+            }
         }
-
+    }
+    
+    func customAlert(alertMessage: String) {
+        self.alertView = UIView(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        let label = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, view.frame.size.height))
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.blackColor()
+        label.numberOfLines = 0
+        label.text = alertMessage
+        setTextWithLineSpacing(label, text: label.text!, lineSpacing: 10.0)
+        label.textAlignment = NSTextAlignment.Center
+        self.alertView.addSubview(label)
+        self.alertView.addSubview(closeAlertButton())
+        self.alertView.backgroundColor = UIColor.whiteColor()
+        view.addSubview(self.alertView)
+        labelConstraints(label)
     }
     
     func labelConstraints(labelToSet: UILabel) -> UILabel {
@@ -973,6 +982,9 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                 self.didGetInfo = false
             }
         })
+        if self.dataSource.isEmpty {
+            didGetData = false
+        }
     }
     
     func getFacebookTimeline() {

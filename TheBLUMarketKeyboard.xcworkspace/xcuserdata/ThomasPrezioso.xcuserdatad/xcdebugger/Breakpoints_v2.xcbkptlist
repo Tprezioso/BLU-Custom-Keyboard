@@ -10,13 +10,77 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
-            timestampString = "491255016.950922"
+            timestampString = "491326697.882579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "699"
-            endingLineNumber = "699"
+            startingLineNumber = "690"
+            endingLineNumber = "690"
             landmarkName = "showAlertWasTapped(_:)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
+            timestampString = "491326697.882579"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "722"
+            endingLineNumber = "722"
+            landmarkName = "setUpTwitterWithCheck()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BLUKeyboard/BLUKeyboardViewController.swift"
+            timestampString = "491327448.143323"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "966"
+            endingLineNumber = "966"
+            landmarkName = "getTwitterTimeLine()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BLUKeyboard.BLUKeyboardViewController.getTwitterTimeLine () -&gt; ()"
+                  moduleName = "BLUKeyboard"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ThomasPrezioso/Desktop/BluMarket/TheBLUMarketKeyboard/BLUKeyboard/BLUKeyboardViewController.swift"
+                  timestampString = "491327687.240713"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "966"
+                  endingLineNumber = "966"
+                  offsetFromSymbolStart = "220">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BLUKeyboard.BLUKeyboardViewController.(getTwitterTimeLine () -&gt; ()).(closure #1)"
+                  moduleName = "BLUKeyboard"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ThomasPrezioso/Desktop/BluMarket/TheBLUMarketKeyboard/BLUKeyboard/BLUKeyboardViewController.swift"
+                  timestampString = "491327687.240817"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "967"
+                  endingLineNumber = "967"
+                  offsetFromSymbolStart = "50">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
