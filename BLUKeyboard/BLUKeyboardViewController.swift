@@ -19,7 +19,7 @@ extension String {
     }
 }
 
-class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class BLUKeyboardViewController: UIInputViewController, UITableViewDelegate, UITableViewDataSource {
     
     var capsLockOn = true
     var topRow: UIView!
