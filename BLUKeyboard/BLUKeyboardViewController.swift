@@ -42,7 +42,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     var bottomView: UIView!
     var didGetData = true
     
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         setupViews()
@@ -292,7 +291,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         button.addTarget(self, action: #selector(BLUKeyboardViewController.twitterTapped), forControlEvents: .TouchUpInside)
         return button
     }
-
     
     // MARK:Button Constraints
     func addConstraints(buttons: [UIButton], containingView: UIView){
@@ -343,6 +341,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         }
     }
 
+    // MARK: Need to fix Height issue
     func setupViewHeight() {
 //        self.view = UIView(frame: CGRectMake(0,0, view.frame.size.width, UIScreen.mainScreen().bounds.size.height))
 //        let heightConstraint = NSLayoutConstraint(item:self.view,
@@ -668,14 +667,11 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.alertView.removeFromSuperview()
     }
     
-    func setTextWithLineSpacing(label:UILabel,text:String,lineSpacing:CGFloat)
-    {
+    func setTextWithLineSpacing(label:UILabel,text:String,lineSpacing:CGFloat) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = lineSpacing
-        
         let attrString = NSMutableAttributedString(string: text)
         attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
-        
         label.attributedText = attrString
     }
 
@@ -695,8 +691,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.topView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
         self.bottomView = UIView(frame: CGRectMake(0,0, view.frame.size.width, 40))
 
-        //getFacebookTimeline()
-        
         self.topView.translatesAutoresizingMaskIntoConstraints = false
         self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -718,7 +712,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     func setUpTwitterWithCheck() {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-//        getTwitterTimeLine()
         if isOpenAccessGranted() == false {
             customAlert("To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access.")
             print("NO FULL ACCESS 🙁")
@@ -740,7 +733,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.alertView.addSubview(label)
         self.alertView.addSubview(closeAlertButton())
         self.alertView.backgroundColor = UIColor.whiteColor()
-
         view.addSubview(self.alertView)
         labelConstraints(label)
     }
@@ -886,7 +878,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     func timedRefresh() {
         let myTimer = NSTimer(timeInterval: 30.0, target: self, selector: #selector(BLUKeyboardViewController.refresh), userInfo: nil, repeats: true)
         NSRunLoop.mainRunLoop().addTimer(myTimer, forMode: NSDefaultRunLoopMode)
-        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -965,7 +956,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                     let twitterAccount = arrayOfAccounts.last as! ACAccount
                     let requestURL = NSURL(string:"https://api.twitter.com/1.1/statuses/home_timeline.json")
                     let parameters = ["screen_name" : "@TomP1129","include_rts" : "0","trim_user" : "0", "count" : "20"]
-                    
                     let postRequest = SLRequest(forServiceType:SLServiceTypeTwitter,
                         requestMethod: SLRequestMethod.GET,
                         URL: requestURL,
@@ -974,7 +964,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                     postRequest.performRequestWithHandler({(responseData: NSData!,
                         urlResponse: NSHTTPURLResponse!,
                         error: NSError!) -> Void in
-                        
                         self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
                         print("\(self.dataSource)")
                         self.checkToSeeIfDataIsThere()
