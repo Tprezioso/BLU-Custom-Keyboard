@@ -714,7 +714,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
         if isOpenAccessGranted() == false {
             customAlert("To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access.")
-            print("NO FULL ACCESS 🙁")
         } else {
             setupTableView(popoverView)
             view.addSubview(popoverView)
