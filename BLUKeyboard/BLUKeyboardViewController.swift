@@ -718,17 +718,13 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
     
     func setUpTwitterWithCheck() {
         self.popoverView = UIView(frame: CGRectMake(0,0, view.frame.size.width, view.frame.size.height))
-        getTwitterTimeLine()
+//        getTwitterTimeLine()
         if isOpenAccessGranted() == false {
             customAlert("To Use Social Feed You Need to enable full access in the keyboard settings Part of the Settings App. Settings > General > KeyBoard > Social Board > Allow Full Access.")
             print("NO FULL ACCESS 🙁")
         } else {
-            if didGetData == false {
-                customAlert("Please go into setting an login and grant access")
-            } else {
-                setupTableView(popoverView)
-                view.addSubview(popoverView)
-            }
+            setupTableView(popoverView)
+            view.addSubview(popoverView)
         }
     }
     
@@ -744,6 +740,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         self.alertView.addSubview(label)
         self.alertView.addSubview(closeAlertButton())
         self.alertView.backgroundColor = UIColor.whiteColor()
+
         view.addSubview(self.alertView)
         labelConstraints(label)
     }
@@ -815,7 +812,6 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         view.addConstraints(view1_constraint_HT)
         view.addConstraints(view1_constraint_V)
     }
-
     
     func refresh() {
         getTwitterTimeLine()
@@ -948,9 +944,10 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
         let account = ACAccountStore()
         let accountType = account.accountTypeWithAccountTypeIdentifier(
             ACAccountTypeIdentifierTwitter)
-        
+        //self.didGetData = false
         account.requestAccessToAccountsWithType(accountType, options: nil, completion: {(success: Bool, error: NSError!) -> Void in
             if success {
+                self.didGetData = true
                 let arrayOfAccounts =
                     account.accountsWithAccountType(accountType)
                 if arrayOfAccounts.count > 0 {
@@ -969,6 +966,7 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                         
                         self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
                         print("\(self.dataSource)")
+                        self.checkToSeeIfDataIsThere()
                         if self.dataSource.count != 0 {
                             dispatch_async(dispatch_get_main_queue()) {
                                 self.tableView.reloadData()
@@ -982,8 +980,18 @@ class BLUKeyboardViewController: UIInputViewController, UIPopoverControllerDeleg
                 self.didGetInfo = false
             }
         })
+        checkToSeeIfDataIsThere()
+    }
+    
+    func checkToSeeIfDataIsThere() {
         if self.dataSource.isEmpty {
-            didGetData = false
+            self.didGetData = false
+        }
+        if self.didGetData == false {
+            customAlert("Please go into setting and sign into you account")
+            self.tableView.hidden = true
+        } else {
+            self.tableView.hidden = false
         }
     }
     
