@@ -732,7 +732,10 @@ class BLUKeyboardViewController: UIInputViewController, UITableViewDelegate, UIT
         self.alertView.addSubview(label)
         self.alertView.addSubview(closeAlertButton())
         self.alertView.backgroundColor = UIColor.whiteColor()
-        view.addSubview(self.alertView)
+        //dispatch_async(dispatch_get_main_queue(), {
+            self.view.addSubview(self.alertView)
+            // code here
+        //})
         labelConstraints(label)
     }
     
@@ -965,10 +968,10 @@ class BLUKeyboardViewController: UIInputViewController, UITableViewDelegate, UIT
                         error: NSError!) -> Void in
                         self.dataSource = try! NSJSONSerialization.JSONObjectWithData(responseData, options: .AllowFragments) as! [AnyObject]
                         print("\(self.dataSource)")
-                        self.checkToSeeIfDataIsThere()
                         if self.dataSource.count != 0 {
                             dispatch_async(dispatch_get_main_queue()) {
                                 self.tableView.reloadData()
+                                self.checkToSeeIfDataIsThere()
                             }
                         }
                     })
@@ -979,7 +982,7 @@ class BLUKeyboardViewController: UIInputViewController, UITableViewDelegate, UIT
                 self.didGetInfo = false
             }
         })
-        checkToSeeIfDataIsThere()
+        //checkToSeeIfDataIsThere()
     }
     
     func getFacebookTimeline() {
